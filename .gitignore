@@ -1,0 +1,30 @@
+# LaTeX intermediate files
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex.gz(busy)
+*.nav
+*.snm
+*.vrb
+*.ilg
+*.blg
+*.bbl
+
+
+# Backup files
+*~
+*.bak
+*.tmp
+*.swp
+*.swo
+
+*.log
+alg/
+probability/
+
