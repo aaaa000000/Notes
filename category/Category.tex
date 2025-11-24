@@ -1,0 +1,1163 @@
+\documentclass[english,course]{lecturenotes}
+\usepackage{lipsum}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz-cd}
+\usetikzlibrary{fit}
+\usetikzlibrary{arrows.meta}
+\usepackage{enumitem}
+
+\title{Category Theory}
+\newtheorem*{example*}{Example}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem*{definition*}{Definition}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem*{theorem*}{Theorem}
+
+\shorttitle{Shortened title} % For headers; if undefined, the usual title will be used
+ % Most of these data are not compulsory
+\subject{Subject of the Talk}
+\author{TSE-YU SU}
+
+
+\speaker{Alex Simpson}
+\date{08}{07}{2025}
+\morelink{https://youtube.com/playlist?list=PLx3dTuDvniVLVjpE8z4wptprGGwuDuzLp&si=t21dXEc8kespmMHr}
+
+\begin{document}
+\section{Category}
+\subsection{Definition}
+A \textbf{Category} $\mathcal{C}$ is given by:
+\begin{itemize}
+\item A collection $|\mathcal{C}|$ or obj($\mathcal{C}$) of \textbf{objects}.
+\item For every $X,Y\in |\mathcal{C}|$, we have a collection $\mathcal{C}(X,Y)$ or $\text{Hom}_{\mathcal{C}}(X,Y)$ of \textbf{morphisms} from $X$ to $Y$.
+\item For $X\in|\mathcal{C}|$, we have $1_X\in \mathcal{C}(X,X)$, called the \textbf{identity morphism} on $X$.
+\item For any $f\in \mathcal{C}(X,Y)$ and $g\in\mathcal{C}(Y,Z)$, we have a \textbf{composite morphism} $g\circ f \in \mathcal{C}(X,Z)$.
+\item These compositions must satisfy:
+	\begin{itemize}
+	\item \textbf{(Identity law) } $1_Y \circ f =f =f \circ 1_X$.
+	\item \textbf{(Associative law) } $h\circ (g \circ f)=(h\circ g) \circ f$, for any $h\in \mathcal{C}(Z,W)$.
+	\end{itemize}
+\end{itemize}
+\subsection{Examples}
+\begin{itemize}
+\item \textbf{Set}: The category of sets.
+	\begin{itemize}
+	\item Objects $|\textbf{Set}|$: The "collection"(can't talk about "set of all sets") of all sets.
+	\item Morphisms \textbf{Set}$(X,Y)$: The set of all functions from $X$ to $Y$.
+	\item Identities $1_X$: The identity function on $X$.
+	\item Compositions: Compositions of functions.
+	\end{itemize}
+	We say a category $\mathcal{C}$ is \textbf{locally small} if $\mathcal{C}(X,Y)$
+	 is a set for all $X,Y$; moreover we say $\mathcal{C}$ is \textbf{small} if the
+	  collection of objects $|\mathcal{C}|$ is a set.\\\textbf{Set} is locally small but not small.
+\item \textbf{Top}: The category of topological spaces( and continuous functions).
+	\begin{itemize}
+	\item Objects $|\textbf{Top}|$: The collection of all topological spaces.
+	\item Morphisms $\textbf{Top}(X,Y)$: The set of all continuous functions from $X$ to $Y$.
+
+	\end{itemize}
+		And the obvious identities and associative law. Again, $\textbf{Top}$ is locally small but not small.
+\item \textbf{Grp}: The category of groups with group homomorphism as morphisms.
+\item $\textbf{Vect}_\mathbf{K}$: The category of vectors spaces over $\mathbf{K}$, with the $\mathbf{K}$-linear transformations as morphisms.
+\item $\textbf{Rel}$: The category of sets, with all binary relations as morphisms.\\
+(A binary relation between $X,Y$ is a function $R:X\times Y\rightarrow\lbrace\text{True},\text{False}\rbrace$. If $R(x,y)=\text{True}$, we say $xRy$)
+	\begin{itemize}
+	\item Objects $|\textbf{Rel}|$: The collection of all sets.
+	\item Morphisms $\textbf{Rel}(X,Y)$: The set of all relations between $X$ and $Y$.
+	\item Identities $1_X:$ $(a,b)\mapsto
+	\begin{cases}
+	\text{True} & \text{if }a=b \\
+	\text{False} & \text{if }a\neq b 
+	\end{cases}	
+	$
+	\item Compositions: Define the "composition of two relations $R,S$" by
+	\begin{equation*}
+		\begin{aligned}
+		(R;S):X\times Z &\rightarrow \lbrace \text{True,False} \rbrace \\
+				(x,z) &\mapsto 	
+				\begin{cases}
+					\text{True} & \text{if exists }y\text{ such that } xRy\text{ and }ySz \\
+					\text{False}& \text{otherwise}
+				\end{cases}	
+		\end{aligned}
+	\end{equation*}
+	\end{itemize}
+\end{itemize}
+All of above categories are locally small but not small, not will give some examples of small categories.
+\begin{itemize}
+\item \textbf{G}: Viewing a group $G$ as a category.
+	\begin{itemize}
+	\item Objects: Has only one objects $*$.
+	\item Morphisms: $\textbf{G}(*,*)=G$.
+	\item Identities: $1_*=e$, the unity element of group $G$.
+	\item Compositions: Compositions as elements in group $G$. 
+	\end{itemize}
+	In fact, one can do the same construction for monoids, monoids are equivalent to categories with only one object.
+\item $\underline{\textbf{P}}$: The poset $P$ as a category.
+	\begin{itemize}
+	\item Objects: $|\underline{\textbf{P}}|=P$.
+	\item Morphisms: $\underline{\textbf{P}}(x,y)=
+	\begin{cases}
+		\lbrace x\leq y \rbrace &\text{if }x\leq y\text{ }(\text{The first "}x\leq y\text{"}\text{ here is a morphism})\\
+		\emptyset &\text{otherwise} 
+	\end{cases}	
+	$
+	\end{itemize}
+Again, we don't need all the axioms of poset here to construct a category, we never use the anti-symmetry axiom ($x\leq y$ and $y\leq x$ implies $x=y$). More generally, we can define categories for any \textbf{preorder set}, which is equivalent to category with a set as objects, and has at most one morphism for each homset, and poset are preorder set which the only isomorphisms are identities. 
+\end{itemize}
+\subsection{Isomorphism, monomorphisms, epimorphisms}
+There are three special kinds of morphisms, \textbf{isomorphisms, monomorphisms }and \textbf{epimorphisms}.\\
+A morphism $X \xrightarrow{f} Y$ is said to be an \textbf{isomorphism} if there exists $Y \xrightarrow{f^{-1}} X$ such that $f^{-1}\circ f=1_X$ and $f\circ f^{-1}=1_Y$.\\
+$f$ is said to be a \textbf{monomorphism} if for any $g,h\in \text{Hom}(Z,X)$, $f\circ g=f\circ h$ implies $f=g$.\\
+Every isomorphisms is also a monomorphism( and epimorphism).
+\[
+\begin{array}{|c|c|c|c|}
+\hline
+\textbf{Categories} & \textbf{Isomorphisms} & \textbf{Monomorphisms} & \textbf{Epimorphisms} \\
+\hline
+\mathbf{Set} & \text{bijections} & \text{injections} & \text{surjections} \\
+\hline
+\mathbf{Top} & \text{homeomorphisms} & \text{injective continuous maps} & \text{surjective continuous maps} \\
+\hline
+\mathbf{Grp} & \text{group isomorphisms} & \text{group monomorphisms} & \text{group epimorphisms} \\
+\hline
+\mathbf{Vect}_\mathbf{K} & \mathbb{K}-\text{linear iso} & \text{inj } \mathbb{K}-\text{linear transf} & \text{surj } \mathbb{K}-\text{ linear transf} \\
+\hline
+\textbf{G}\text{(a group)} & \text{all maps}&\text{all maps} &\text{all maps} \\
+\hline
+\underline{\textbf{P}}\text{(a poset)} & \text{identities} & \text{all maps} & \text{all maps}	 \\
+\hline
+\end{array}
+\] 
+Note that a morphism which is both a monomorphism and a epimorphism does not necessarily imply that it is an isomorphism. For example, in category of rings \textbf{Rng}, the embedding $\mathbb{Z}\rightarrow \mathbb{Q}$ is mono and epi(since $\mathbb{Q}$ is the fraction ring of $\mathbb{Z}$, and any ring homomorphism from it is unique determined by the image of $\mathbb{Z}$, hence determined by image of $1$), but it has no inverse, so is not iso.
+\section{Functor}
+\subsection{Definition}
+A \textbf{functor} $F$ is a "transformation" between two categories $\mathcal{X},\mathcal{Y}$, and is given by:
+\begin{itemize}
+\item \textbf{Objectation} A mapping of objects $|\mathcal{X}|\rightarrow |\mathcal{Y}|$.
+\item \textbf{Morphsim actions} For any $a,b\in |\mathcal{X}|$, and any $f\in \text{Hom}(a,b)$, there is a $F(f)\in \text{Hom}(F(a),F(b))$.
+\item \textbf{Preserving identities} For any $a\in |\mathcal{X}|$, $F(1_a)=1_a$.
+\item \textbf{Preserving compositions} For any $a\xrightarrow{f} b \xrightarrow{g} c$, $F(g\circ f)=F(g)\circ F(f)$.
+\end{itemize} 
+\subsection{Examples}
+\begin{itemize}
+\item \textbf{Forgetful functor: Grp}$\xrightarrow{F}$\textbf{Set}\\
+$F$ sends each group to the set of group element, and sends group homomorphism $\phi$ to the same function but as a function between sets.
+\item \textbf{Homomorphism functor between two group categories}\\
+Since group category has only one object, the functor just need to preserve the morphisms, which is equivalent to preserving group operations, so the functors between 2 groups are just group homomorphisms between them.
+\item \textbf{Cat: Category of categories }\\
+We can form a category whose objects are categories and morphisms are functor. But this raises some problems, for example, can the category of all categories \textbf{Cal} be an object of itself?\\
+We will circumvent these problems by considering \textbf{Cal} to be the category of \textbf{small} categories.\\
+Exercise: Between 2 small categories, the functors between form a set. (So \textbf{Cal} is locally small but now small). 
+\end{itemize}
+There a 3 types of categories, we have discuss the first and second types:
+\begin{itemize}
+\item  Categories whose objects are mathematical structures and morphisms between them are transformations or relations between each two individual structures.\\
+\textbf{Set, Grp, Top, Rel, Cat,} $\textbf{Vect}_{\mathbb{K}}$.
+\item Categories which are categorifications of individual mathematical structures.\\
+\textbf{G, M, P} (category constructed by a single group, monoid, poset, respectively).
+\item Categories formed by category-theoretic constructions via existing categories.\\
+$\mathcal{C}^{\text{op}}$: For any category $\mathcal{C}$, we define its opposite category $\mathcal{C}^{\text{op}}$ by: $|\mathcal{C}^{\text{op}}|=|\mathcal{C}|$, and $\mathcal{C}^{\text{op}}(X,Y)=\mathcal{C}(Y,X)$. (same objects, but "reverses" the morphisms)\\
+An important usage of notion of opposite categories is that we can define the notion of "dual". (later)\\
+\textbf{Facts:}	
+	\begin{itemize}
+	\item $(\mathcal{C}^{\text{op}})^{\text{op}}=\mathcal{C}$.
+	\item For $f\in \mathcal{C}(X,Y)$, $g\in\mathcal{C}(Y,Z)$, $(g\circ f)^{\text{op}}=f^{\text{op}}\circ g^{\text{op}}$.
+	\item Functors $\mathcal{C}\xrightarrow{F}\mathcal{D}$ and functors $\mathcal{C}^{\text{op}}\xrightarrow{F^{opp}}\mathcal{D}^{\text{op}}$ are in one-to-one correspondence with the obvious way.
+	\end{itemize}
+\end{itemize}
+\subsection{Contravariant Functors}
+An important reason for considering opposite categories is that it's extremely common that we need to consider functors from an opposite category to a non-opposite category: $\mathcal{C}^{\text{op}}\xrightarrow{F}\mathcal{D}$, such functors are called \textbf{Contravariant Functors} from $\mathcal{C}$ to $\mathcal{D}$.\\
+If we want to clarify $\mathcal{C}\xrightarrow{G}\mathcal{D}$ is not contravariant from $\mathcal{C}$ to $\mathcal{D}$, we say $G$ is a \textbf{Covariant Functor} from $\mathcal{C}$ to $\mathcal{D}$.
+\begin{example*}
+The construction of dual vector space $V^*$ via given vector space $V$ is actually functorial in the contravariant (on itself) sense.
+\begin{equation*}
+\begin{tikzpicture}[scale=1.2, every node/.style={font=\normalsize}]
+  % Nodes (objects)
+  \node (Vop) at (0,2) {\(V^{\text{op}}\)};
+  \node (Wop) at (0,0) {\(W^{\text{op}}\)};
+  \node (Vstar) at (4,2) {\(V^*\)};
+  \node (Wstar) at (4,0) {\(W^*\)};
+  
+  % Labels
+  \node at (0,2.5) {\(\textbf{Vect}^{\text{op}}_{\mathbb{K}}\)};
+  \node at (4,2.5) {\(\textbf{Vect}_{\mathbb{K}}\)};
+  
+  % Vertical arrows (morphisms)
+  \draw[->] (Wop) -- (Vop) node[midway, left] {\(f^{\text{op}}\)};
+  \draw[->] (Wstar) -- (Vstar) node[midway, right] {\(f^*\)};
+  
+  % Shorter horizontal functor arrow
+  \draw[->] (0.8,1) -- (3.2,1) node[midway, above] {$(\cdot)^*$};
+\end{tikzpicture}
+\end{equation*}
+\begin{equation*}
+(f^*(w^*))(v)=w^*(f(v))
+\end{equation*}
+\end{example*}
+\subsection{Product Category}
+The product $\mathcal{C}\times\mathcal{D}$ of two categories $\mathcal{C},\mathcal{D}$ is defined by:
+\begin{itemize}
+\item $|\mathcal{C}\times\mathcal{D}|=|\mathcal{C}|\times|\mathcal{D}|$.
+\item $(\mathcal{C}\times\mathcal{D})((X,Y),(X^{\prime},Y^{\prime}))=\mathcal{C}(X,X^{\prime})\times \mathcal{D}(Y,Y^{\prime})$.
+\end{itemize}
+Can easily check this define a category.
+\\There are evident \textbf{projection functors}:
+\begin{equation*}
+\begin{aligned}
+\pi_1&:\mathcal{C}\times\mathcal{D}&\rightarrow \mathcal{C}\\
+\pi_2&:\mathcal{C}\times\mathcal{D}&\rightarrow \mathcal{D}
+\end{aligned}
+\end{equation*}
+Can define the product category of finite many categories.\\
+More generally, for index set $I$, can define the product category $\prod\limits_{i\in I}\mathcal{C}_i$.
+It's now clear what is meant by a \textbf{multi-argument} functor:
+\begin{equation*}
+\mathcal{C}_1\times \mathcal{C}_2 \times ... \times \mathcal{C}_n \xrightarrow{F} \mathcal{D}
+\end{equation*}
+
+\subsection{Hom Functor}
+The \textbf{Hom Functor} for a category $\mathcal{C}$ is:
+\begin{equation*}
+\begin{aligned}
+\mathcal{C}(-,-)\; :\; & \mathcal{C}^{\text{op}}\times\mathcal{C} && \longrightarrow && \mathbf{Set} \\
+& (X,Y) && \longmapsto && \mathcal{C}(X,Y)
+\end{aligned}
+\end{equation*}
+\begin{equation*}
+\begin{tikzpicture}
+	\node (X1) at (0,1) {$X_1$};
+	\node (X2) at (0,0) {$X_2$};
+	\node (Y1) at (2,1) {$Y_1$};
+	\node (Y2) at (2,0) {$Y_2$};
+	\node (C1) at (6,2) {$\mathcal{C}(X_1,Y_1)$};
+	\node (C2) at (6,-1) {$\mathcal{C}(X_2,Y_2)$};	
+	
+	\draw[->] (X2)--(X1) node[midway,left]{$f$};
+	\draw[->] (Y1)--(Y2) node[midway,right]{$g$};
+	\draw[->] (3,0.5)--(5,0.5) node[midway,above]{$\mathcal{C}(-,-)$};
+	\draw[->] (C1)--(C2) node[midway,right]{$\mathcal{C}(f,g)$};
+\end{tikzpicture}
+\end{equation*}
+The hom functor $\mathcal{C}(-,-)$ takes tuple $(f,g)$ to a function (between sets) from $\mathcal{C}(X_1,Y_1)$ to $\mathcal{C}(X_2,Y_2)$.\\
+$\mathcal{C}(f,g)$ is defined by simply "join" $\alpha\in\mathcal{C}(X_1,Y_2)$ into the diagram:
+\begin{equation*}
+\begin{tikzpicture}
+	\node (X1) at (0,1) {$X_1$};
+	\node (X2) at (0,0) {$X_2$};
+	\node (Y1) at (2,1) {$Y_1$};
+	\node (Y2) at (2,0) {$Y_2$};
+	
+	\draw[->] (X2)--(X1) node[midway,left]{$f$};
+	\draw[->] (Y1)--(Y2) node[midway,right]{$g$};
+	\draw[dashed,->] (X1)--(Y1) node[midway,above]{$\alpha$};
+	\draw[ultra thick,->] (X2)--(Y2) node[midway,below]{$g\circ\alpha \circ f$};
+\end{tikzpicture}
+\end{equation*}
+\subsection{Duality}
+When we have a new category concept, we automatically get another category concept by interpreting the original category concept in dual category.\\
+\textbf{Dual notion of monomorphism:}
+\begin{definition*}
+$X\xrightarrow{f}Y$ is an \textbf{epimorphism (epi)} if:
+\begin{equation*}
+X^{\text{op}}\xrightarrow{f^{\text{op}}}Y^{\text{op}}
+\end{equation*}
+is a monomorphism.
+\end{definition*}
+\subsection{Exercise}
+
+\begin{enumerate}
+
+\item{\textbf{(Powerset Functors)}}
+\begin{enumerate}
+\item Find a \textbf{contravariant} functor $\textbf{Set}^{\text{op}}\rightarrow\textbf{Set}$, whose object action is $S\mapsto \mathcal{P}S:$ the powerset of $S$.
+\item Find a \textbf{covariant} functor $\textbf{Set}\rightarrow\textbf{Set}$, whose object action is $S\mapsto \mathcal{P}S$.
+\item Do Exercise 2 again, find a different one.
+\end{enumerate}
+
+\item
+\begin{enumerate}
+\item Does functor $\textbf{Set}\xrightarrow{F}\textbf{Set}$ preserve monomorphisms?
+\item Does functor $\textbf{Set}\xrightarrow{F}\textbf{Set}$ preserve epimorphisms?
+\end{enumerate}
+\end{enumerate}
+
+\textbf{Answers:}
+\begin{enumerate}
+\item
+\begin{enumerate}
+\item Define the "preimage functor" $\text{Pre}$, for $f\in \textbf{Set}(X,Y)$, and $B\subseteq Y$, $(\text{Pre}(f))(B)=f^{-1}(B)\subseteq X$.
+\item The "image functor" \text{Im}.
+\item Define the "Unique image functor" U:\\For $A\subseteq X,$ $(U(f))(A)=\lbrace b\in Y|\exists ! a\in A \text{ s.t. } f(a)=y\rbrace$.
+\end{enumerate}
+\item
+\begin{enumerate}
+	\item Yes.\\Since if $X\xrightarrow{f}Y$ is injective, then exists some $Y\xrightarrow{g}X$ s.t. $g\circ f=1_X$. ($g$ maps image of $f$ to its preimage, and sends other elements in $Y$ to arbitrary element of $X$)\\
+	So for any functor $\textbf{Set}\xrightarrow{F}\textbf{Set}$, $F(g\circ f)=F(g)\circ F(f)=1_X$, which implies $F(f)$ is a monomorphism.
+\item Yes.\\Similarly, if $X\xrightarrow{f}Y$ is surjective, then exists $Y\xrightarrow{g}X$ s.t. $f\circ g=1_Y$.
+\end{enumerate}
+\end{enumerate}
+
+\section{Natural transformation}
+What transformations are \textbf{Natural} in a sense?\\
+To answer this question, which lies at the very foundation of category theory, we need notion of \textbf{Functor}, and in order to define functor, we need the notion of \textbf{Category}. 
+\begin{example*}
+Let $V$ be a finite dimensional vector space over $\mathbf{K}$, then $V^{*}$ is also a finite dimensional vector space of the same dimension over $\mathbf{K}$, i.e. there exists isomorphism:
+\begin{equation*}
+V\overset{\phi}{\cong} V^{*}
+\end{equation*}
+But to build an isomorphism $\phi$, there's an arbitrary (non-natural) choice involved, we need to choose a basis $\beta$ for $V$, and then use $\beta$ to define a corresponding basis $\beta^{*}$ for $V^{*}$, and define $\phi$ via these two basis:
+\begin{equation*}
+\beta=\lbrace v_1,v_2,... \rbrace, \; \beta^{*}=\lbrace v^{*}_{1},v^{*}_{2},... \rbrace
+\end{equation*}
+\begin{equation*}
+v^{*}_{i}:\sum_{i} a_i v_i \mapsto a_i
+\end{equation*}
+
+\begin{equation*}
+\phi: \sum_{i} a_i v_i \mapsto \sum_{i} a_i v^{*}_{i}
+\end{equation*}
+We also have $V\cong V^{**}$, but in this case we can find an isomorphism independent of choices of basis:
+\begin{equation*}
+v\mapsto v^{**}, v^{**} \text{ maps elements in }V^{*} \text{ to } \mathbf{K} \text{ by } v^{**}(u^{*})\coloneqq u^{*}(v)
+\end{equation*}
+\end{example*}
+Is there a mathematical definition which characterize this naturality?
+\subsection{Definition}
+Let $F,G:\mathcal{C}\rightarrow \mathcal{D}$ be functors, a \textbf{Natural Transformation} $\alpha:F\Rightarrow G$ is given by a family of components indexed by objects of $\mathcal{C}$:
+\begin{equation*}
+(FX \xrightarrow{\alpha_X}GX)_{X\in|\mathcal{C}|}
+\end{equation*}
+that satisfies the following \textbf{naturality condition:}
+\begin{equation*}
+\forall X\xrightarrow{f}Y \in \mathcal{C}(X,Y), \text{ the following diagram commutes: }
+\end{equation*}
+\begin{equation*}
+\begin{tikzpicture}
+\node (FX) at (0,1) {FX};
+\node (FY) at (0,0) {FY};
+\node (GX) at (2,1) {GX};
+\node (GY) at (2,0) {GY};
+
+\draw[->] (FX)--(GX) node[midway,above]{$\alpha_X$};
+\draw[->] (FX)--(FY) node[midway,left]{$Ff$};
+\draw[->] (FY)--(GY) node[midway,below]{$\alpha_Y$};
+\draw[->] (GX)--(GY) node[midway,right]{$Gf$};
+\end{tikzpicture}
+\end{equation*}
+\subsection{Examples}
+\begin{itemize}
+\item $\epsilon: 1_{\textbf{Vect}_\mathbf{K}}\Rightarrow (\cdot)^{**}:$\\
+\begin{equation*}
+\begin{alignedat}{2}
+\epsilon_V :\ & V &\longrightarrow &\ V^{**} \\
+& v &\longmapsto &\ \bigl(v^{**}:f \mapsto f(v)\bigr)
+\end{alignedat}
+\end{equation*}
+\item For any set $X$, we have:
+\begin{equation*}
+\begin{alignedat}{2}
+\lbrace\cdot \rbrace_X:&X&\longrightarrow  &\mathcal{P}X\\
+                       &x&\longmapsto&\lbrace x\rbrace
+\end{alignedat}
+\end{equation*}
+So this defines a natural transformation from $1_{\textbf{Set}}$ to $\mathcal{P}$: the (image) powerset functor.
+\item We also have:
+\begin{equation*}
+\begin{array}{rcl}
+\displaystyle \bigcup_X : \mathcal{P}\mathcal{P}X & \longrightarrow & \mathcal{P}X \\[6pt]
+\displaystyle \bigl\{\, X_\alpha \mid \alpha \in A \,\bigr\} & \longmapsto & \displaystyle \bigcup_{\alpha\in A} X_\alpha
+\end{array}
+\end{equation*}
+This defines a natural transformation from $\mathcal{P}\mathcal{P}$ to $\mathcal{P}$.
+\end{itemize}
+\subsection{Functor category}
+Let $F,G,H$ be functors from $\mathcal{C}$ to $\mathcal{D}$, and $\alpha:F\Rightarrow G,\beta:G\Rightarrow H$ be natural transformations.
+\begin{equation*}
+\begin{tikzpicture}
+    \node (C) at (0,0) {$\mathcal{C}$};
+    \node (D) at (4,0) {$\mathcal{D}$};
+
+    % 上方弧線：從 C 的北邊到 D 的北邊
+    \draw[->, bend left=40] (C.north east) to node[above] {$F$} (D.north west);
+
+    % 中間直線：兩個標籤
+    \draw[->] (C) -- (D)
+        node[midway, above] {$\Downarrow \alpha$}
+        node[midway, below] {$\Downarrow \beta$}
+        node[near end,below] {$G$};
+
+    % 下方弧線：從 C 的南邊到 D 的南邊
+    \draw[->, bend right=40] (C.south east) to node[below] {$H$} (D.south west);
+\end{tikzpicture}
+\end{equation*}
+Obviously, there is a composite natural transformation of $\alpha,\beta$ from $F$ to $G$.\\
+We therefore have a \textbf{Functor Category} $[\mathcal{C},\mathcal{D}]$, whose objects are functors $\mathcal{C}\xrightarrow{F}\mathcal{D}$, and morphisms are natural transformations.\\
+\textbf{Size issues:} If $\mathcal{C},\mathcal{D}$ are both large, then $[\mathcal{C},\mathcal{D}]$ is "very large". However, if $\mathcal{C}$ is small, and $\mathcal{D}$ is locally small, then $[\mathcal{C},\mathcal{D}]$ is locally small; moreover, if $\mathcal{C},\mathcal{D}$ are both samll, then$[\mathcal{C},\mathcal{D}]$ is also small.\\
+The above composition is called \textbf{Horizontal} composition. There is also \textbf{Vertical} composition, defined as follows:
+\begin{definition*}[Whiskering]
+Let:
+\begin{equation*}
+\begin{tikzpicture}
+	\node(B) at (0,0){$\mathcal{B}$};
+	\node(C) at (2,0){$\mathcal{C}$};
+	\node(D) at (4,0){$\mathcal{D}$};
+	\node(E) at (6,0){$\mathcal{E}$};
+	
+	\draw[->] (B)--(C) node[midway,above]{$F$};
+	
+	\draw[->] (D)--(E) node[midway,above]{$H$};
+	
+	% 上方弧線箭頭 G_1
+    \draw[->, bend left=40] (C) to node[above]{$G_1$} (D);
+
+    % 下方弧線箭頭 G_2
+    \draw[->, bend right=40] (C) to node[below]{$G_2$} (D);
+
+    % 中間自然變換符號
+    \node at (3,0) {$\Downarrow \alpha$};
+\end{tikzpicture}
+\end{equation*}
+Define:
+\begin{equation*}
+\begin{alignedat}{2}
+	&H\alpha:HG_1\Rightarrow HG_2\\
+	&(H\alpha)_X=H\alpha_X \text{ for }X\in|\mathcal{C}|.
+\end{alignedat}
+\end{equation*}
+Note: $H\alpha_X$ is the morphism obtained by applying functor $H$ to morphism $\alpha_X\in\mathcal{D}(G_1X,G_2X)$ for $X\in|\mathcal{C}|.$\\
+Similarly, there is also:
+\begin{equation*}
+\begin{alignedat}{2}
+	&\alpha F:G_1F\Rightarrow G_2F\\
+	&(\alpha F)_Y=\alpha_{FY} \text{ for }Y\in|\mathcal{B}|.
+\end{alignedat}
+\end{equation*}
+\end{definition*}
+\begin{definition*}[Horizontal Composition of functors]
+Let:
+\begin{equation*}
+\begin{tikzpicture}
+	\node (C) at (0,0) {$\mathcal{C}$};
+	\node (D) at (2,0) {$\mathcal{D}$};
+	\node (E) at (4,0) {$\mathcal{E}$};
+	
+	\draw[->,bend left=40] (C) to node[above]{$F_1$} (D);
+	\draw[->,bend left=40] (D) to node[above]{$G_1$} (E);
+	\draw[->,bend right=40] (C) to node[below]{$F_2$} (D);
+	\draw[->,bend right=40] (D) to node[below]{$G_2$} (E);
+	
+	\node at (1,0) {$\Downarrow \alpha$};
+	\node at (3,0) {$\Downarrow \beta$};
+\end{tikzpicture}
+\end{equation*}
+Define:
+\begin{equation*}
+\begin{alignedat}{2}
+	\beta*\alpha&:G_1F_1\Rightarrow G_2F_2 \\
+	      &=(\beta F_2) \circ (G_1 \alpha) \\
+	      &=(G_2 \alpha) \circ (\beta F_1) 
+\end{alignedat}
+\end{equation*}
+\end{definition*}
+This above operation gives us that horizontal functor composition actually defines a functor:
+\begin{equation*}
+\begin{aligned}
+[\mathcal{D},\mathcal{E}] \times [\mathcal{C},\mathcal{D}] &\longrightarrow [\mathcal{C},\mathcal{E}] \\
+(G,F) &\longmapsto G \circ F \\
+(\alpha,\beta) &\longmapsto \beta * \alpha
+\end{aligned}
+\end{equation*}
+It is useful to know which morphisms(natural transformations) in functor category $[\mathcal{C},\mathcal{D}]$ are isomorphisms.
+\begin{proposition*}
+\\\\
+The following are equivalent for $\alpha:F\Rightarrow G$, $F,G$ are functors from $\mathcal{C}$ to $\mathcal{D}$.
+\begin{itemize}
+\item For all $X\in|\mathcal{C}|$, $FX\xrightarrow{\alpha_X}GX$ is an isomorphism in $\mathcal{D}$.
+\item $\alpha$ is an isomorphism in $[\mathcal{C},\mathcal{D}]$.
+\end{itemize}
+Such natural transformations are called \textbf{Natural Isomorphisms}.
+\end{proposition*}
+Now we will step away from natural transformation and look at another construction of new category via existing category.
+\subsection{Slice Category, I-indexed families of sets}
+\begin{definition*}{Slice Category}
+Given a category $\mathcal{C}$ and an object $I\in|\mathcal{C}|$.\\
+The \textbf{Slice Category} $\mathcal{C}/I$ of $\mathcal{C}$ over $I$ is defined as:
+\begin{itemize}
+	\item \textbf{Objects:} All morphisms of the form $X\xrightarrow{p}I$ in $mathcal{C}$.
+	\item \textbf{Morphisms(from $X\xrightarrow{p}I$ to $Y\xrightarrow{q}I$):} All morphisms $X\xrightarrow{f}Y$ in $\mathcal{C}$ such that the diagram commutes:
+	\begin{equation*}
+		\begin{tikzpicture}
+			\node(X) at (0,1) {$X$};
+			\node(Y) at (2,1) {$Y$};
+			\node(I) at (1,0) {$I$};
+			
+			\draw[->] (X)--(Y) node[midway,above]{$f$};
+			\draw[->] (X)--(I) node[midway,left]{$p$};
+			\draw[->] (Y)--(I) node[midway,right]{$q$};
+		\end{tikzpicture}
+	\end{equation*}
+	\item The identities and compositions are the same as in $\mathcal{C}$.
+\end{itemize}
+\end{definition*}
+There is also \textbf{Co-slice Category} $I/\mathcal{C}$ of $\mathcal{C}$ under $I$. The objects are all morphisms $I\xrightarrow{\iota}X$ in $\mathcal{C}$, and similarly the morphisms are $X\xrightarrow{f}Y$ such that the corresponding diagram commutes.\\
+Can also define the co-slice category $I/\mathcal{C}$ as $\left( \mathcal{C}^{\text{op}} / I \right)^{\text{op}}$.
+\begin{example*}{(Slice Category in \textbf{Set})}
+\\Let $I$ be a set. Consider \textbf{Set}$/I$, an object in \textbf{Set}$/I$ is a function $X\xrightarrow{p}I$. We can mark the points in $X$ according to where it maps in $I$ by $p$.\\
+Now consider $X\xrightarrow{p}I$ and $Y\xrightarrow{q}I$, $X\xrightarrow{f}Y$ makes the diagram commutes iff it preserves shapes:
+% ---- 放在文件正文 ----
+\begin{center}
+\begin{tikzpicture}[>=Stealth, node distance=3cm, every node/.style={font=\large}]
+
+% 框架：三個集合
+\draw[dashed] (-3,1) circle (1.6cm);  % X
+\draw[dashed] (3,1) circle (1.6cm);   % Y
+\draw[dashed] (0,-4) circle (1.8cm);  % I
+
+% 集合名稱
+\node at (-3,2.8) {$X$};
+\node at (3,2.8) {$Y$};
+\node at (0,-6) {$I$};
+
+% I 的元素 (三種形狀，星形置中往上)
+\node[circle, fill=black, inner sep=2.5pt] (i1) at (-1.0,-5.0) {};                                   
+\node[regular polygon, regular polygon sides=3, fill, scale=0.5] (i2) at (0.5,-5.2) {}; 
+\node (i3) at (0,-2.5) {$\bigstar$};                                     
+
+% X 的元素
+\node[circle, fill=black, inner sep=2.5pt] (x1) at (-2,0) {};
+\node[circle, fill=black, inner sep=2.5pt] (x2) at (-4.2,0.5) {};
+\node[regular polygon, regular polygon sides=3, fill, scale=0.5] (x3) at (-3.2,1.3) {};
+\node[regular polygon, regular polygon sides=3, fill, scale=0.5] (x4) at (-2.8,0.2) {};
+\node (x5) at (-2.3,2.2) {$\bigstar$};  
+\node (x6) at (-1.7,1.5) {$\bigstar$};   
+
+% ✅ Y 的元素（位置打亂）
+\node[circle, fill=black, inner sep=2.5pt] (y1) at (2.4,1.5) {};     % 上方略偏左
+\node[circle, fill=black, inner sep=2.5pt] (y2) at (3.6,0.3) {};     % 偏右稍低
+\node[regular polygon, regular polygon sides=3, fill, scale=0.5] (y3) at (2,0.8) {}; 
+\node[regular polygon, regular polygon sides=3, fill, scale=0.5] (y4) at (4,0.3) {}; 
+\node (y5) at (3,1) {$\bigstar$};  
+\node (y6) at (3,0) {$\bigstar$};   
+
+% p: X -> I
+\draw[->, dashed, bend right=22] (x1) to (i1);
+\draw[->, dashed, bend right=17] (x2) to (i1);
+\draw[->, dashed, bend right=13] (x3) to (i2);
+\draw[->, dashed, bend right=9]  (x4) to (i2);
+\draw[->, dashed, bend right=7]  (x5) to (i3);
+\draw[->, dashed, bend right=4]  (x6) to (i3);
+
+% q: Y -> I
+\draw[->, dashed, bend left=22] (y1) to (i1);
+\draw[->, dashed, bend left=17] (y2) to (i1);
+\draw[->, dashed, bend left=13] (y3) to (i2);
+\draw[->, dashed, bend left=9]  (y4) to (i2);
+\draw[->, dashed, bend left=7]  (y5) to (i3);
+\draw[->, dashed, bend left=4]  (y6) to (i3);
+
+% X -> Y (f)
+\draw[->] (x1) -- (y1);
+\draw[->] (x3) -- (y3);
+\draw[->] (x5) -- (y6)node[midway, above] {$f$};
+
+% 標記 p 和 q
+\node at (-1.2,-1.5) {$p$};
+\node at (1.2,-1.5) {$q$};
+
+\end{tikzpicture}
+\end{center}
+
+A morphism $f\in\textbf{Set}/I(p,q)$ is equivalent to a family of functions:
+\begin{equation*}
+\left(f:p^{-1}\left(i\right)\longrightarrow q^{-1}\left(i\right)\right)_{i\in I}
+\end{equation*}
+\end{example*}
+The slice category has a very strong connection to another naturally defined category which is the category of high index families of sets, whose morphisms are functions which preserve index.
+\begin{definition*}{(I-indexed families of sets $\textbf{Fam}_{I}$)}
+\\Let $I$ be a set, we define \textbf{I} to be the \textbf{discrete category} of $I$, whose objects are elements in $I$, and the only morphisms are the identities.\\
+Now we define: 
+\begin{equation*}
+\textbf{Fam}_I=[\textbf{I},\textbf{Set}]
+\end{equation*}  
+i.e. the functor category from $\textbf{I}$ to $\textbf{Set}$.\\
+Equivalently, the objects of $\textbf{Fam}_I$ are I-indexed families of set $(X_i)_{i\in 1I}$, and the morphisms $\textbf{Fam}_I\left(\left(X_i\right),\left(Y_i\right)\right)$ are equivalent to all families $(X_i\xrightarrow{f_{i}}Y_i)_{i\in I}$.\\
+The identities are the I-indexed families of identities on each $i$, and the compositions are compositions index-wise.
+\end{definition*}
+\subsection{Equivalence of Categories}
+Now we will show that the slice category is "basically" the same as $\textbf{Fam}_I$, but one needs to  be careful in how to formulate it. For example, in slice category, we can view the object $p$ as for any $i\in I$, we can maps $i$ to $p^{-1}(i)$, and take this as any object in $\textbf{Fam}_I$. But in this case, each $p^{-1}(i)$ is disjoint to each other, where objects in $\textbf{Fam}_I$ are arbitrary families of sets. What we can do is formulate functors between each of two categories(one for each direction), which show 2 categories are very close related in a way called \textbf{Equivalence of Categories}.\\
+\begin{example*}
+Define two functors:
+
+\begin{align*}
+  F: \mathbf{Set}/I &\longrightarrow \mathbf{Fam}_I \\
+  (X \xrightarrow{p} I) &\longmapsto (p^{-1}(i))_{i \in I} \\
+  \\
+  S: \mathbf{Fam}_I &\longrightarrow \mathbf{Set}/I \\
+  (X_i)_{i \in I} &\longmapsto \Sigma_{i \in I} X_i = \{ (i, x) \mid x \in X_i,\, i \in I \}\text{ (This is called the disjoint union)}
+\end{align*}
+The mapping of morphisms is obvious.\\
+Now we have two natural isomorphisms:
+\begin{align*}
+  \Phi &: 1_{\mathbf{Set}/I} \Rightarrow SF \\
+  \Psi &: 1_{\mathbf{Fam}_I} \Rightarrow FS
+\end{align*}
+Can easily verify there are indeed such natural isomorphisms. 
+\end{example*}
+\begin{definition*}{(Equivalence of Categories)}
+\\	
+An equivalence of categories between $\mathcal{C}$ and $\mathcal{D}$ is given by 
+$(F,G,\alpha,\beta)$ where:
+\begin{align*}
+	F      &:\mathcal{C} \longrightarrow \mathcal{D}\\
+	G      &:\mathcal{D} \longrightarrow \mathcal{C}\\
+	\alpha &:1_{\mathcal{C}} \Rightarrow SF \\
+	\beta  &:1_{\mathcal{D}} \Rightarrow FS
+\end{align*}
+Where $\alpha,\beta$ are natural isomorphisms.\\
+Equivalently, the following diagrams holds:
+\begin{equation*}
+	\begin{tikzpicture}
+		\node(C) at (0,0) {$\mathcal{C}$};
+		\node(D) at (2,0) {$\mathcal{D}$};
+		\draw[->,bend left=40] (C) to node[above]{$F$} (D);
+		\draw[->,bend left=40] (D) to node[below]{$G$} (C);
+	\end{tikzpicture}
+\end{equation*}
+\begin{equation*}
+	\begin{tikzpicture}
+		\node(C1) at (0,0) {$\mathcal{C}$};
+		\node(C2) at (2,0) {$\mathcal{C}$};
+		\node(D1) at (4,0) {$\mathcal{D}$};
+		\node(D2) at (6,0) {$\mathcal{D}$};
+		\draw[->,bend left=40] (C1) to node[above]{$1_{\mathcal{C}}$} (C2);
+		\draw[->,bend left=40] (C2) to node[below]{$GF$} (C1);
+		\draw[->,bend left=40] (D1) to node[above]{$1_{\mathcal{D}}$} (D2);
+		\draw[->,bend left=40] (D2) to node[below]{$FG$} (D1);
+		
+		\node at (1,0) {$\alpha\Downarrow \cong$};
+		\node at (5,0) {$\beta\Downarrow\cong$};
+	\end{tikzpicture}
+\end{equation*}
+Notice this is not an isomorphism between categories because $FG,GF$ are not \textbf{equall to} the identity functors,	instead we get functors naturally isomorphic to identities functors.
+\end{definition*}
+There are lots of nice equivalence in mathematics, for example, a famous one is the category of compact Hausdorff space with continuous functions is equivalent to the opposite of the category of commutative $C^*$ algebras.\\
+Now we're going to introduce an example of two categories that's a little bit weaker than a equivalence, but are still very similar. Fist we introduce a new category:\\
+$\textbf{Mat}_\mathbf{K}:$
+\begin{itemize}
+	\item \textbf{Objects:} $\mathbb{N}$ : all natural number.
+	\item \textbf{Morphisms:} $\textbf{Mat}_{\mathbf{K}}(n,m)=M_{m\times n}(\mathbb{K})$: all $m\times n$ matrices with entries in $\mathbb{K}$.
+	\item \textbf{Identities \& Composition:} Identity matrices and matrices composition. 
+\end{itemize}
+Normally we name a category with its objects, but in this case the matrices are the morphisms of category.\\
+Matrices play a central role in linear algebra. For example, to represent a transformation between two finite-dimensional vector spaces, we typically begin by choosing suitable bases for each space and then express the transformation as a matrix. There is a strong relationship between the category of matrices and the category of vector spaces.\\
+There is a functor:
+\begin{equation*}
+\begin{alignedat}{2}
+  J:\; & \mathbf{Mat}_{\mathbb{K}} &\longrightarrow& \mathbf{Vect}_{\mathbb{K}} \\
+       & n                         &\longmapsto    & \mathbb{K}^n \\
+        (n &\xrightarrow{A} m)        &\longmapsto    & T_A \text{, where } [T_A]_{\beta}=A ,\beta \text{ is the standard basis of }\mathbb{K}^n.
+\end{alignedat}
+\end{equation*}
+This functor $J$ is \textbf{full} and \textbf{faithful}, with the following definition:
+\begin{definition*}{(Full \& Faithful Functor)}
+\begin{itemize}
+A functor $\mathcal{C}\xrightarrow{F}\mathcal{D}$ is called:
+\item \textbf{full} if for any objects $X,Y$ in $\mathcal{C}$, and for any $g\in \mathcal{D}(FX,FY)$, there exists $f\in\mathcal{C}(X,Y)$ such that $Ff=g$.
+\item \textbf{faithful} if for any morphisms $f\neq g$ in $\mathcal{C}(X,Y)$, $Ff\neq Fg$.
+\end{itemize}
+\end{definition*}
+A full and faithful functor is called \textbf{fully faithful} or an \textbf{embedding} of categories.\\
+Consider $\mathbf{FDVect}_{\mathbb{K}}$, the category of finite-dimensional vector space, and $\mathbf{Mat}_{\mathbb{K}}\xrightarrow{J}\mathbf{FDVect}_{\mathbb{K}}$ is again full and faithful. But in this case $J$ satisfies another property,  described as follow:\\
+It's not true that every finite dimensional vector space \textbf{equals} to $\mathbb{K}^n$, although they may share the same dimension, they can still be distinct as objects. For example, $\mathbb{K}^n$ and its dual $(\mathbb{K}^n)^{*}$ are not the same vector space from category perspective, even though they have the same dimension. But what is true is that for any $n$-dimensional vector space $V$,  there is an isomorphism between $V$ and $\mathbb{K}^n$.\\
+\begin{lemma*}
+If $\mathcal{C}\xrightarrow{F} \mathcal{D}$ is fully faithful, then $F$ reflects isomorphisms, i.e. for any morphism $f$, if $Ff$ is an isomorphism, then $f$ is also an isomorphism. Sometimes we called such $F$ is \textbf{conservative}.
+\end{lemma*}
+\begin{definition*}
+We say $\mathcal{C}\xrightarrow{F}\mathcal{D}$ is \textbf{essentially surjective on objects} if:
+\begin{equation*}
+\forall Y \in |\mathcal{D}|,\ \exists X \in |\mathcal{C}|\  \text{s.t. } F	X\cong Y
+\end{equation*}
+\end{definition*}
+\begin{definition*}
+A functor $F$ is called a \textbf{weak equivalence} if $F$ is essential surjective on objects and fully faithful.
+\end{definition*}
+\begin{theorem*}\mbox{}
+\begin{enumerate}
+	\item If $F$ arises as part of an equivalence $(F,G,\alpha,\beta)$, then $F$ is a weak equivalence.
+	\item If $F$ is a weak equivalence, then assuming a suitable version of axiom of choice, $F$ arise as part of an equivalence $(F,G,\alpha,\beta)$.
+\end{enumerate}
+\end{theorem*}
+In the case of $\textbf{Mat}_{\mathbb{K}}\xrightarrow{J}\textbf{FDVect}_{\mathbb{K}}$, the "choice" is to find a basis for each finite dimensional vector space in $\textbf{FDVect}_{\mathbb{K}}$.
+\begin{proof}{(of 2)}\mbox{}\\
+Using the axiom of choice, define $G: \textbf{FDVect}_{\mathbb{K}} \to \textbf{Mat}_{\mathbb{K}}$ by choosing, for each $Y \in |\textbf{FDVect}_{\mathbb{K}}|$, an object $X \in |\textbf{Mat}_{\mathbb{K}}|$ such that $Y \xrightarrow[\beta_Y]{\sim} FX$, and set $GY = X$ (possible since $F$ is essentially surjective).\\
+We also need action of $G$ on morphisms. Given $Y\xrightarrow{g}Y^\prime$, since we want $\beta$ to be a natural transformation, the following diagram must commute:
+\begin{equation*}
+	\begin{tikzpicture}
+		\node(Y) at (0,0) {$Y$};
+		\node(Y') at (0,-1) {$Y^\prime$};
+		\node(FGY) at (2,0) {$FGY$};
+		\node(FGY') at (2,-1) {$FGY^\prime$};
+		\draw[->] (Y)--(Y') node[midway,left]{$g$};
+		\draw[->] (Y)--(FGY) node[midway,above]{$\beta_Y$};
+		\draw[->] (Y')--(FGY') node[midway,below]{$\beta_{Y^\prime}$};
+		\draw[->] (FGY)--(FGY') node[midway,right]{$FGg$};
+	\end{tikzpicture}
+\end{equation*}
+Necessarily, $FGg=\beta_{Y^\prime}\circ g\circ\beta^{-1}_{Y}$. Since $F$ is fully faithful, $Gg$ is uniquely defined. Finally, we need to verify such $G$ is well-defined, i.e. it preserves identities and compositions. (easily verified by drawing a diagram)\\
+To build an equivalence, we also need to define a natural isomorphism $\alpha:1\Rightarrow GF$. Since $FX\xrightarrow{\beta_{FX}}FGFX$ is an isomorphism, and by the lemma above $F$ reflects isomorphisms, so exists an isomorphism $X\xrightarrow{F^{-1}\beta_{FX}}GFX$.
+\end{proof}
+What is the "suitable version" of axiom of choice?\\
+For locally small categories, we need the \textbf{axiom of global choice}.\\
+For small categories, the ordinary axiom of choice suffices.\\
+There is a nice category-theoretic formulation of axiom of choice:
+\begin{center}
+In \textbf{Set}, every epimorphism splits.
+\end{center}
+In \textbf{Set}, suppose $X\xrightarrow{s} Y \xrightarrow{r} X$ and $r\circ s=1_X$, then $r$ is epi and $s$ is mono.\\
+In any category, an epi $Y\xrightarrow{r}X$ is \textbf{split} if there exists $X\xrightarrow{s}$ s.t. $r\circ s=1_X$.\\
+Similarly, a mono $X \xrightarrow{s}Y$ is \textbf{split} if there exists $Y\xrightarrow{r}X$ s.t. $r\circ s=1_X$.\\
+If one has such an $X\xrightarrow{s} Y\xrightarrow{r} X$, then we say $Y$ is a \textbf{retract} of $X$, and the epi $r$ is called a \textbf{retraction}, the mono $s$ is called a \textbf{section}, and the composite $t=Y \xrightarrow{s\circ r}Y$ is an idempotent, that is $t=t\circ t$.\\
+How does this connect to axiom of choice?\\
+We can view a surjective function $Y\xrightarrow{g}X$ as an indexed set:
+\begin{equation*}
+	(Y_{\alpha})_{\alpha\in X},\text{ where }Y_{\alpha}=\lbrace y\in Y | g(y)=\alpha  \rbrace
+\end{equation*}
+Since $g$ is surjective, $Y_{\alpha}$ is non-empty, and since it splits, there exists a \textbf{selection} $X\xrightarrow{f}Y$ such that $g\circ f=1_X$.\\
+For each $x\in X$, such $f$ \textbf{choose} an $f(x)\in Y$ such that $f(x)\in Y_x$.
+\section{Constructions within categories}
+\subsection{Pullbacks}
+In a category $\mathcal{C}$, a \textbf{pullback} of a pair of maps with common codomain (such pair of maps is called a \textbf{cospan}) $X\xrightarrow{f}Z\xleftarrow{g}Y$ is given by a \textbf{span} $X\xleftarrow{p} P \xrightarrow{q} Y$ for which $f\circ p=g\circ q$, and such that for every $X\xleftarrow{\alpha}W\xrightarrow{\beta}Y$ with $f\circ\alpha=g\circ\beta$, there exists a unique $W\xrightarrow{w}P$ such that $p\circ w=\alpha$ and $q\circ w=\beta$.
+\begin{equation*}
+\begin{tikzpicture}
+	\node(P) at (0,0) {$P$};
+	\node(X) at (0,-1) {$X$};
+	\node(Y) at (1.5,0) {$Y$};
+	\node(Z) at (1.5,-1) {$Z$};
+	\node(W) at (-1,1) {$W$};
+	
+	\draw[->] (P)--(X) node[midway,left]{$p$};
+	\draw[->] (P)--(Y) node[midway,above]{$q$};
+	\draw[->] (X)--(Z) node[midway,below]{$f$};
+	\draw[->] (Y)--(Z) node[midway,right]{$g$};
+	\draw[->,bend right=40] (W) to node[below]{$\alpha$} (X);
+	\draw[->,bend left=40] (W) to node[above]{$\beta$} (Y);
+	\draw[->,dashed] (W)--(P) node[pos=0.5,right]{$\exists ! w$};
+\end{tikzpicture}
+\end{equation*}
+Given a cospan, it may or may not have a pullback. For some nice categories, the pullback always exists. For example, \textbf{Set} always has pullbacks:
+\begin{equation*}
+\text{For } X\xrightarrow{f} Z\xleftarrow{g} Y,\text{ }P=\lbrace (x,y)\in X\times Y |f(x)=g(y) \rbrace\text{, with the projections }\pi_1,\pi_2
+\end{equation*} 
+\begin{equation*}
+\begin{tikzpicture}
+	\node(P) at (0,0) {$P$};
+	\node(X) at (0,-1) {$X$};
+	\node(Y) at (1.5,0) {$Y$};
+	\node(Z) at (1.5,-1) {$Z$};
+	
+	\draw[->] (P)--(X) node[midway,left]{$\pi_1$};
+	\draw[->] (P)--(Y) node[midway,above]{$\pi_2$};
+	\draw[->] (X)--(Z) node[midway,below]{$f$};
+	\draw[->] (Y)--(Z) node[midway,right]{$g$};
+	
+	% Pullback mark at upper left corner
+	\node at ($(P)+(0.2,-0.2)$) {$\lrcorner$};
+\end{tikzpicture}
+\end{equation*}
+We place a  $\lrcorner$  symbol at the upper left corner to indicate that the diagram is a pullback.\\
+Again in $\textbf{Set}$ can view a cospan $X\xrightarrow{f} Z\xleftarrow{g} Y$ as a pair of $Z-$indexed set $(X_z)_{z\in Z},(Y_z)_{z\in Z}$, and the pullback of $f,g$ is the \textbf{fiber-product} $(X_z\times Y_z)_{z\in Z}$.\\
+\begin{example*}\\
+\begin{itemize}
+	\item Pullback as inverse-image of function
+	\begin{equation*}
+	\begin{tikzpicture}
+		\node(P) at (0,0) {$P$};
+		\node(X) at (1.5,0) {$X$};
+		\node(Y') at (0,-1) {$Y^\prime$};
+		\node(Y) at (1.5,-1) {$Y$};
+		
+		\draw[->](P)--(X) node[midway,above]{$\iota_X$};
+		\draw[->](P)--(Y') node[midway,left]{$f|_P$};
+		\draw[->](X)--(Y) node[midway,right]{$f$};
+		\draw[->](Y')--(Y) node[midway,below]{$\iota_Y$};
+			\node at ($(P)+(0.2,-0.2)$) {$\lrcorner$};
+	\end{tikzpicture}
+	\end{equation*}
+	Where $P=f^{-1}(Y^\prime)$, and $\iota_X,\iota_Y$ are the inclusion maps.
+	\item Pullback as intersection of sets
+	\begin{equation*}
+	\begin{tikzpicture}
+		\node(P) at (0,0) {$P$};
+		\node(X1) at (1.5,0) {$X_1$};
+		\node(X2) at (0,-1) {$X_2$};
+		\node(X) at (1.5,-1) {$X$};
+		
+		\draw[->](P)--(X1) node[midway,above]{$\iota_{P,1}$};
+		\draw[->](P)--(X2) node[midway,left]{$\iota_{P,2}$};
+		\draw[->](X1)--(X) node[midway,right]{$\iota_1$};
+		\draw[->](X2)--(X) node[midway,below]{$\iota_2$};
+		\node at ($(P)+(0.2,-0.2)$) {$\lrcorner$};
+	\end{tikzpicture}
+	\end{equation*}
+	Where $P=X_1\cap X_2$, and the $\iota$'s are inclusions with corresponding domain and codomain.
+\end{itemize}
+\end{example*}
+\textbf{Propositions:}
+\begin{itemize}
+	\item In any category $\mathcal{C}$, pullbacks of the same cospan are unique up to isomorphism.
+	\item The maps $X\xleftarrow{p}P\xrightarrow{q}Y$ in a pullback are \textbf{jointly monomorphic}, i.e. given any $P\xleftarrow{v}W\xrightarrow{u}P$, if $p\circ u=p\circ v$ and $q\circ u=q\circ v$, then $u=v$. 
+	\item Pullback preserves monomorphisms. Given a pullback:
+		\begin{equation*}
+	\begin{tikzpicture}
+		\node(P) at (0,0) {$P$};
+		\node(X) at (1.5,0) {$X$};
+		\node(Y) at (0,-1) {$Y$};
+		\node(Z) at (1.5,-1) {$Z$};
+		
+		\draw[->](P)--(X) node[midway,above]{$p$};
+		\draw[->](P)--(Y) node[midway,left]{$q$};
+		\draw[->](X)--(Z) node[midway,right]{$f$};
+		\draw[->](Y)--(Z) node[midway,below]{$g$};
+		\node at ($(P)+(0.2,-0.2)$) {$\lrcorner$};
+	\end{tikzpicture}
+	\end{equation*}
+	If $f$ is a monomorphism, then $q$ is also a monomorphism, similarly, if $g$ is  a mono, then $p$ is also a mono.
+\end{itemize}
+\begin{lemma*}{(Pullback lemma)}\\
+For a diagram of two commuting square sharing a common edge:
+\begin{equation*}
+	\begin{tikzpicture}
+		\node(P) at (0,0) {};
+		\node(X) at (1.5,0) {};
+		\node(Y) at (0,-1) {};
+		\node(Z) at (1.5,-1) {};
+		\node(A) at (3,0) {};
+		\node(B) at (3,-1) {};		
+		
+		
+		\draw[->](P)--(X) ;
+		\draw[->](P)--(Y);
+		\draw[->](X)--(Z);
+		\draw[->](Y)--(Z);
+		\draw[->](X)--(A);
+		\draw[->](A)--(B);
+		\draw[->](Z)--(B);
+
+		\node at (0.75,-0.5) {(a)};
+		\node at (2.25,-0.5) {(b)};
+	\end{tikzpicture}
+\end{equation*}
+Where (a) is the left-square diagram, (b) is the right-square diagram, and let (a)+(b) denote the outer square diagram by composing the upper and lower two arrow.
+\begin{itemize}
+	\item If (a) and (b) are both pullbacks, then (a)+(b) is also a pullback.
+	\item If (a)+(b) is a pullback, and (b) is a pullback, then (a) is a pullback.
+\end{itemize}
+\end{lemma*}
+Will prove the generalization of the second statement:\\
+For a diagram:
+\begin{equation*}
+	\begin{tikzpicture}
+		\node(X'') at (0,0) {$X^{\prime\prime}$};
+		\node(X') at (1.5,0) {$X^\prime$};
+		\node(Y'') at (0,-1) {$Y^{\prime\prime}$};
+		\node(Y') at (1.5,-1) {$Y^\prime$};
+		\node(X) at (3,0) {$X$};
+		\node(Y) at (3,-1) {$Y$};		
+		
+		
+		\draw[->](X'')--(X') node[midway,above]{$h^\prime$};
+		\draw[->](X'')--(Y'') node[midway,left]{$f^{\prime\prime}$};
+		\draw[->](X')--(X)node[midway,above]{$h$};
+		\draw[->](X')--(Y')node[midway,right]{$f^\prime$};
+		\draw[->](Y'')--(Y')node[midway,below]{$g^\prime$};
+		\draw[->](X)--(Y)node[midway,right]{$f$};
+		\draw[->](Y')--(Y)node[midway,below]{$g$};
+
+		\node at (0.75,-0.5) {(a)};
+		\node at (2.25,-0.5) {(b)};
+	\end{tikzpicture}
+\end{equation*}
+\begin{itemize}
+\item If (a)+(b) is a pullback, and $h,f^\prime$ are jointly monomorphic, then (a) is a pullback.
+\end{itemize}
+\begin{proof}
+We need to prove for every $Y^{\prime\prime}\xleftarrow{y}W\xrightarrow{x}X^\prime$, there exists an unique $W\xrightarrow{w}X^{\prime\prime}$ such that the following diagram commutes:
+\begin{equation*}
+	\begin{tikzpicture}
+		\node(W) at (-1.5,1) {$W$};
+		\node(X'') at (0,0) {$X^{\prime\prime}$};
+		\node(Y'') at (0,-1) {$Y^{\prime\prime}$};
+		\node(X') at (1.5,0) {$X^\prime$};
+		\node(Y') at (1.5,-1) {$Y^\prime$};
+		
+		\draw[->] (W)--(X'') node[midway,above]{$w$};
+		\draw[->] (X'')--(X') node[midway,above]{$h^\prime$};
+		\draw[->] (X'')--(Y'') node[midway,left]{$f^{\prime\prime}$};
+		\draw[->] (Y'')--(Y') node[midway,below]{$g^{\prime}$};
+		\draw[->] (X')--(Y') node[midway,right]{$f^\prime$};
+		
+		\draw[->,bend left=40] (W) to node[midway,above]{$x$} (X');
+		\draw[->,bend right=40] (W) to node[midway,below]{$y$} (Y'');
+	\end{tikzpicture}
+\end{equation*}
+Since (a)+(b) is a pullback, for $W\xrightarrow{h\circ x}X$ and $W\xrightarrow{y}Y^{\prime\prime}$, there exist an unique $w$ such that the following diagram commute:
+\begin{equation*}
+	\begin{tikzpicture}
+		\node(W) at (-1.5,1) {$W$};
+		\node(X'') at (0,0) {$X^{\prime\prime}$};
+		\node(Y'') at (0,-1) {$Y^{\prime\prime}$};
+		\node(X') at (1.5,0) {$(X^\prime)$};
+		\node(Y') at (1.5,-1) {$(Y^\prime)$};
+		\node(X) at (3,0) {$X$};
+		\node(Y) at (3,-1) {$Y$};
+		
+		\node() at(1.5,0.35) {$h\circ h^\prime$};
+		\node() at(1.5,-1.3) {$g\circ g^\prime$};
+		\draw (X'')--(X');
+		\draw[->] (X')--(X);
+		\draw (Y'')--(Y');
+		\draw[->] (Y')--(Y);
+		\draw[->] (X'')--(Y'');
+		\draw[->] (X)--(Y);
+		
+		\draw[->,bend left=20] (W) to node[midway,above]{$x$} (X');
+		\draw[->,bend right=40] (W) to node[midway,below]{$y$} (Y'');
+		\draw[->,bend left=40] (W) to node[midway,above]{$h\circ x$} (X);
+		\draw[->] (W)--(X'') node[midway,above] {$w$};
+	\end{tikzpicture}
+\end{equation*}
+To make the first diagram (a) commute, we need to check that $h^\prime\circ w=x$. Since $h\circ x=h\circ (h^\prime\circ w)$ and $f^\prime\circ x=g^\prime \circ y =g^\prime \circ f^{\prime\prime}\circ w=f^\prime \circ h^\prime \circ w$, by jointly monomorphic, we obtain that $x=h^\prime\circ w$.
+\end{proof}
+\subsection{Limit}
+Pullback is a special case of a general construction in category called \textbf{limit}.
+\begin{definition*}[Cone]
+A cone $(O,\pi)$ of a diagram is an \textbf{object} together with a \textbf{collection of morphisms}, such that every triangle commutes.
+\begin{equation*}
+\begin{tikzpicture}[>=stealth]
+
+    % 左邊的 diagram
+    \node(A) at (0,0) {$A$};
+    \node(B) at (1,0.6) {$B$};
+    \node(C) at (1,-0.6) {$C$};
+    \node(D) at (2,0) {$D$};
+
+    \draw[->] (A)--(B) node[midway,above]{$f$};
+    \draw[->] (A)--(C) node[midway,below]{$g$};
+    \draw[->] (B)--(D) node[midway,above]{$h$};
+    \draw[->] (C)--(D) node[midway,below]{$w$};
+
+    % 用橢圓圈起來
+    \node[draw, ellipse, fit=(A)(B)(C)(D), label=below:{diagram}] {};
+	\node() at (3.5,0) {$\rightarrow$};
+    % 右邊的 diagram
+    \node(A2) at (5,0) {$A$};
+    \node(B2) at (6,0.6) {$B$};
+    \node(C2) at (6,-0.6) {$C$};
+    \node(D2) at (7,0) {$D$};
+
+    \draw[->] (A2)--(B2) ;
+    \draw[->] (A2)--(C2) ;
+    \draw[->] (B2)--(D2) ;
+    \draw[->] (C2)--(D2) ;
+
+    % 圈起來
+    \node[draw, ellipse, fit=(A2)(B2)(C2)(D2), label=below:{}] {};
+
+    % limit 物件
+    \node(O) at (5.5,3) {$O$};
+
+    % 從 limit 出發的態射
+    \draw[->, dashed] (O)--(A2) node[midway,left]{$\pi_A$};
+    \draw[->, dashed] (O)--(B2) node[midway,above right]{$\pi_B$};
+    \draw[->, dashed] (O)--(C2) node[midway,below left]{$\pi_C$};
+    \draw[->, dashed] (O)--(D2) node[midway,right]{$\pi_D$};
+
+\end{tikzpicture}
+\end{equation*}
+\begin{itemize}
+	\item $g\circ\pi_A=\pi_C$
+	\item $f\circ\pi_A=\pi_B$
+	\item $h\circ\pi_B=\pi_D$
+	\item $w\circ\pi_C=\pi_D$
+\end{itemize}
+\end{definition*}
+
+\begin{definition*}[limit]
+A limit of a diagram is a cone $(L,\pi)$, which satisfies that for any other cone $(O,\pi^\prime)$, there exists an \textbf{unique} morphism $O\xrightarrow{\phi}L$ such that the diagram of two cones together with $\phi$ commutes.\\
+Can view the limit as the core, essence cone that any cone uniquely collapse into the limit.
+\end{definition*}
+\\
+\newline
+\textbf{Fact:} Limits are unique up to isomorphism.\\
+Pullback is actually the limit of a diagram with the form $\rightarrow\leftarrow$. 
+Now we will give some general results about limit:
+\begin{example*}\\
+\begin{itemize}
+	\item Binary product \\
+	A \textbf{binary product} for $X,Y$ is a span $X\xleftarrow{p}P\xrightarrow{q}Y$ such that for any $X\xleftarrow{x}Z\xrightarrow{y}Y$, there exists a unique $Z\xrightarrow{z}P$ such that $p\circ z=x$ and $q\circ z=y$. Binary product is actually the limit of a two-point diagram with no arrows.\\
+	A category $\mathcal{C}$ is said to have binary products if, for every $X,Y\in|\mathcal{C}|$, the binary product of $X,Y$ exists.\\
+	\begin{equation*}
+		\begin{tikzpicture}
+			\node(Z) at (0,0) {$Z$};
+			\node(P) at (0,-1) {$P$};
+			\node(X) at (-1,-1.5) {$X$};
+			\node(Y) at (1,-1.5) {$Y$};
+			
+			\draw[->,dashed] (Z)--(P) node[midway,left] {$z$};
+			\draw[->] (P)--(X) node[midway,above] {$p$};
+			\draw[->] (P)--(Y) node[midway,above] {$q$};
+			\draw[->,bend right=40] (Z) to node[midway,above]{$x$} (X) ;
+			\draw[->,bend left=40] (Z) to node[midway,above]{$y$} (Y) ;
+		\end{tikzpicture}
+	\end{equation*}
+	\begin{itemize}
+		\item \textbf{Set} has products, the cartesian products.
+		\item $\textbf{Vect}_\mathbf{K}$ has products, the cartesian products of vector spaces.
+		\item \textbf{Grp} has products, the direct products.
+		\item \textbf{Top} has products, the topological products of spaces.
+	\end{itemize}
+	We often write $X\xleftarrow{\pi_1}X\times Y\xrightarrow{\pi_2}Y$ for a chosen product in any category $\mathcal{C}$.
+	\item $I$-indexed product in $\mathcal{C}$ \\
+	$I\in|\textbf{Set}|$ and consist of objects in $\mathcal{C}$.  \\
+	A product of a pamily $(X_i)_{i\in I}$ is an object $P$ and a family $(P\xrightarrow{p_i}X_i)_{i\in I}$ such that for any $Z$ and family $(Z\xrightarrow{x_i}X_i)_{i\in I}$ there exists a unique $Z\xrightarrow{z}P$ such that for any $i\in I$, $p_i\circ z=x_i$.
+	\begin{equation*}
+	\begin{tikzpicture}
+		\node(Z) at (0,0) {$Z$};
+		\node(P) at (1,0) {$P$};
+		\node(X) at (1,-1) {$X_i$};
+		
+		\draw[->] (Z)--(P) node[midway,above]{$z$};
+		\draw[->] (Z)--(X) node[midway,left]{$x_i$};
+		\draw[->] (P)--(X) node[midway,right]{$p_i$};
+	\end{tikzpicture}
+	\end{equation*}
+A special case of indexed product is which the indexed set is empty. In this case the product is simply an object $T$, and for any other object $Z$ there exists a unique map $Z\xrightarrow{u}T$. Such a $T$ is called a \textbf{terminal object}. The usual notation for such unique morphism is $Z\xrightarrow{1_Z}T$. \\
+We say a category $\mathcal{C}$ has product if for every index family, the product exists.
+	\begin{proposition*}
+	For a category $\mathcal{C}$, the following are equivalent:
+	\begin{enumerate}
+		\item $\mathcal{C}$ has finite product.
+		\item $\mathcal{C}$ has a terminal object and binary product.
+	\end{enumerate}
+	\end{proposition*}
+\item Equalizer of 
+\begin{tikzcd}
+X \arrow[r, shift left=0.5ex, "f"] \arrow[r, shift right=0.5ex, swap, "g"] & Y
+\end{tikzcd}
+\newline
+An equalizer of \begin{tikzcd}
+X \arrow[r, shift left=0.5ex, "f"] \arrow[r, shift right=0.5ex, swap, "g"] & Y
+\end{tikzcd} is a map $E\xrightarrow{e}X$ such that $f\circ e=g\circ e$ and for any $Z\xrightarrow{z}X$ such that $f\circ z=g\circ z$, there exists a unique $Z\xrightarrow{w}E$ such that $e\circ w=z$.
+\begin{itemize}
+	\item \textbf{Set} has equalizers. $E=\lbrace x\in X | f(x)=g(x) \rbrace$, $e$ is the inclusion map.
+\end{itemize}
+	\end{itemize}
+	In any category, the equalizer $E\xrightarrow{e}X$ is a monomorphism.(exercise)\\
+	It's not true in general that the monomorphisms airse as an equalizer. Those monomorphisms which are also equalizers are called \textbf{regular monomorphisms}.\\
+	In \textbf{Set}, every monomorphism is regular, however in \textbf{Top} not every monomorphism is regular.
+
+\end{example*}
+\subsection{Graph}
+Diagram shapes are graphs.
+\begin{equation*}
+\begin{tikzpicture}
+	\node() at (0,0) {Pullback};
+	\node() at (0,-1) {Binary Product};
+	\node() at (0,-2) {I-indexed Product};
+	\node() at (0,-3) {Terminal Object};
+	\node() at (0,-4) {Equalizer};
+	\node() at (0,-5) {Projective limit};
+	
+	\node() at (4,-2.5) {is the limit for};
+	
+	\node(P1) at (6.5,0) {$\bullet$};
+	\node(P2) at (7.2,0) {$\bullet$};
+	\node(P3) at (7.9,0) {$\bullet$};
+	
+	\draw[->] (P3)--(P2);	
+	\draw[->] (P1)--(P2);
+	
+	\node() at (6.5,-1) {$\bullet$};
+	\node() at (7.2,-1) {$\bullet$};
+	
+	\node(a) at (6.5,-2) {$\bullet$};
+	\node(b) at (7.2,-2) {$\bullet$};
+	\node(c) at (7.9,-2) {$\bullet$};
+	\node(d) at (8.6,-2) {$\bullet$};
+	\node(e) at (9.4,-2) {$\cdots$};
+	\node(f) at (10.2,-2) {$\bullet$};
+	
+	\draw[->] (a)--(b);
+	\draw[->] (b)--(c);
+	\draw[->] (c)--(d);
+	\draw[->] (d)--(e);
+	\draw[->] (e)--(f);
+	
+	\node() at (7.7,-3) {empty diagram};
+	
+	\node(x) at (6.5,-4) {$\bullet$};
+	\node(y) at (7.5,-4) {$\bullet$};
+	
+	\draw[->,bend left=40] (x) to (y);
+	\draw[->,bend right=40] (x) to (y);
+	
+	\node(a1) at (6.5,-5) {$\cdots$};
+	\node(b1) at (7.3,-5) {$\bullet$};
+	\node(c1) at (8,-5) {$\bullet$};
+	\node(d1) at (8.7,-5) {$\bullet$};
+	\node(e1) at (9.4,-5) {$\bullet$};
+	\node(f1) at (10.1,-5) {$\bullet$};
+	
+	\draw[->] (a1)--(b1);
+	\draw[->] (b1)--(c1);
+	\draw[->] (c1)--(d1);
+	\draw[->] (d1)--(e1);
+	\draw[->] (e1)--(f1);
+	
+	\node() at (8.7,-5.5) {(extended to infinity to the left)};
+\end{tikzpicture}
+\end{equation*}
+Specifically \textbf{directed multigraphs} (will just call them graph instead in this lecture), also called \textbf{quivers}.
+In this lecture a graph $G$ is given by a collection $|G|$ of \textbf{vertices} and for every $u,v\in |G|$ a collection $G(u,v)$ of edges with source $u$ and target $v$.\\
+The definition is similar with category except graph don't require identities and compositions.\\
+We say a graph is \textbf{small}/\textbf{locally small}/\textbf{finite}/\textbf{locally finite} in the obvious way.\\
+Just like graph generalize category, there is also generalization of functor which is \textbf{graph morphism}.\\
+A graph morphism $G \xrightarrow{F}G^\prime$ is given by a map of vertices $|G| \xrightarrow{F_o}|G^\prime|$ and for every $u,v\in|G|$ a map of edges $G(u,v)\xrightarrow{F_{u,v}}G^{\prime}(F_o(u),F_o(v))$.\\
+Now we can define a graph category $\textbf{Graph}$, whose objects are all small graphs and morphisms are graph morphisms.\\
+A \text{diagram} over a graph $G$ in a category $\mathcal{C}$ is a graph morphism from $G$ to $F_G(\mathcal{C})$, where $F_G$ is the forgetful functor from $\textbf{Cal}$ to $\textbf{Graph}$.\\
+The limit for a graph is defined in the obvious way.\\
+\begin{definition*}
+A category $\mathcal{C}$ is (\textbf{complete}/\textbf{finitely complete}) if every (\textbf{small}/\textbf{finite}) diagram has a limit.
+\end{definition*}
+\begin{theorem*}
+The following are equivalent:
+\begin{enumerate}[label=(\arabic*)]
+	\item $\mathcal{C}$ is complete.
+	\item $\mathcal{C}$ has products and equalizers.
+\end{enumerate}
+\end{theorem*}
+
+\begin{theorem*}
+The following are equivalent:
+\begin{enumerate}[label=(\arabic*)]
+	\item $\mathcal{C}$ is finitely complete.
+	\item $\mathcal{C}$ has finite products and equalizers.
+	\item $\mathcal{C}$ has a terminal object and pullbacks.
+\end{enumerate}
+\end{theorem*}
+
+\subsection{Exercise}
+\begin{enumerate}
+	\item What are products in the category \textbf{Rel} of relations?
+	\item In any category, the equalizer $E\xrightarrow{e}X$ is a monomorphism.
+	\item Prove that every monomorphism in \textbf{Set} is regular.
+	\item In \textbf{Top}, regular monomorphisms coincide with embeddings (continuous functions that preserves the topological structures).
+	\item Prove that the second and third statement in the last theorem are equivalent.
+\end{enumerate}
+
+
+\end{document}
