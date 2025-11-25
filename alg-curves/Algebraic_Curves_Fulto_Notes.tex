@@ -203,6 +203,14 @@
 			\draw[->] (X1)--(X2) node[midway,right]{Buchberger Algorithm};
 		\end{tikzpicture}
 	\end{center}
+	Now give the definition of Gröbner basis, first fix a lexico ordering $X_1>X_2>...$.
+	\begin{definition}[Initial Monomial,Ideal]
+		Let $>$ be a monomial ordering, define the \textbf{initial monomial} $in_{>}(F)$ to be the leading term of the polynomial $F\in k[X_1,...,X_n]$ i.e. the monomial in $F$ of maximal degree.\\
+		Consider the ideal consists of every initial monomial of polynomial in $I$, called the \textbf{initial ideal}, denoted by $in_>(I)$. Can see $in_>(I)$ is indeed an ideal in $k[X_1,...,X_n]$.
+	\end{definition}
+	\begin{definition}[Gröbner basis]
+		Given polynomials $f_1,...,f_n$ and monomial ordering $>$, a finite set of polynomial $\lbrace g_1,g_2,...,g_m \rbrace$ is called a \textbf{Gröbner basis} of $\lbrace f_1,...,f_n \rbrace$ if $in_>(f_1,...,f_n)=(in_>(g_1),...,in_>(g_m))$.
+	\end{definition}
 	Will show an combinatory application of Gröbner basis:
 	\begin{question}
 		Minimize linear function $P+N+D+Q$, while $P,N,D,Q\in\mathbb{N}\cup \lbrace 0 \rbrace$, with constraint $ P+5N+10D+25Q=117$.
@@ -263,4 +271,7 @@ with ordering $P>N>D>Q$, this is the only reasonable choice of lexico order, sin
 	QN\sim D^3 
 \end{equation*}
 Which the degree on the left-hand-side is greater, but the right one has much number of coins.
+\\
+	
+
 \end{document}
