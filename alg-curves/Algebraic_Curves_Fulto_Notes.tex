@@ -207,20 +207,20 @@
 	\begin{question}
 		Minimize linear function $P+N+D+Q$, while $P,N,D,Q\in\mathbb{N}\cup \lbrace 0 \rbrace$, with constraint $ P+5N+10D+25Q=117$.
 	\end{question}
-	\textbf{Answer:} Consider polynomial ring $\mathbb{Q}[C,P,N,D,Q]$, can represente a combination of coins by a monomial $C^{n}P^{n_P}N^{n_N}D^{n_D}Q^{n_Q}$, where $n=\sum_\alpha n_\alpha$.\\
+	\textbf{Answer:} Consider polynomial ring $\mathbb{Q}[C,P,N,D,Q]$, can represent a combination of coins by a monomial $C^{n}P^{n_P}N^{n_N}D^{n_D}Q^{n_Q}$, where $n=\sum_\alpha n_\alpha$.\\
 	Now define relations:
 	\begin{align*}
 		&f_1=CN-C^5P^5\\
 		&f_2=CD-C^{10}P^{10}\\
 		&f_3=CQ-C^{25}P^{25}
 	\end{align*}
-	These three polynomial represente all the exchange rules of coins, which are:
+	These three polynomial represent all the exchange rules of coins, which are:
 	\begin{align*}
 		&\text{1 nickel }=\text{ 5 pennies}\\
 		&\text{1 dime }=\text{ 10 pennies}\\
 		&\text{1 quarter }=\text{ 25 pennies}\\
 	\end{align*}
-	The $C-$degree of each monomial in the relations representes the number of coins.\\
+	The $C-$degree of each monomial in the relations represents the number of coins.\\
 	Now choose an ordering $C> P> N> D> Q$, then apply Buchberger Algorithm to these three polynomials, will get a unique \textbf{reduced Gröbner basis} consists of nine polynomials (computed by program, might be wrong):
 	\begin{align*}
 		&g_1: C^5P^5 - CN\\
@@ -233,7 +233,7 @@
 		&g_8: CP^5Q - CN^6\\
 		&g_9: CP^5D^4 - CN^9\\
 	\end{align*}
-	In order to minimize total number of coins, we apply generalized polynomial division to $C^{117}P^{117}$(representes 117 coins of penny), and calculate the remainder, which is:
+	In order to minimize total number of coins, we apply generalized polynomial division to $C^{117}P^{117}$(represents 117 coins of penny), and calculate the remainder, which is:
 	\begin{center}
 		\fbox{$C^8P^2NDQ^4$}
 	\end{center}
@@ -252,7 +252,7 @@
 	\hline
 \end{tabular}
 \end{center}
-\textbf{Note:} The additional vairable $C$ for counting number of coins is crutial, one may try to work under $\mathbb{Q}[P,N,D,Q]$ and compute Gröbner basis for:
+\textbf{Note:} The additional variable $C$ for counting number of coins is crucial, one may try to work under $\mathbb{Q}[P,N,D,Q]$ and compute Gröbner basis for:
 \begin{align*}
 	&f^{\prime}_{1}=N-P^5\\
 	&f^{\prime}_{2}=D-P^{10}\\
