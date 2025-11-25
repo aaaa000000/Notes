@@ -169,6 +169,98 @@
 		Let $I$ be an ideal in $k[X_1,...,X_n]$, then $V(I)$ is a finite set if and only if $k[X_1,...,X_n]/I$ is a finite dimensional vector space over $k$. In this case the number of points in $V(I)$ is less or equal to $ \text{dim}_k(k[X_1,...,X_n]/I)$.
 	\end{corollary}
 	\begin{proof}
-		
+		Assume $k[X_1,...,X_n]/I$ is a finite dimensional vector space over $k$, let points $P_1,...,P_r\in V(I)$, choose polynomials $F_i\in k[X_1,...,X_n],i=1,...,r$ s.t. $F_i(P_i)=1$ and $F_i(P_j)=0$ for $i\neq j$. Want to show $I-$redidue classes $\bar{F_i}$ are linearly independent over $k$. If $\sum_{i=1}^{r}\lambda_i \bar{F_i}=0$, then $\sum_{i=1}^{r}\lambda_i F_i\in I$, so $\lambda_j=\sum_{i=1}^{r}\lambda_i F_i(P_j)=0$, hence $\bar{F_i}$ are linearly independent over $k$, so $r\leq \text{dim}_k(k[X_1,...,X_n]/I)$.\\
+		Conversely, if $V(I)=\lbrace P_1,...,P_r \rbrace$ is finite, let $P_{i}=(a_{i,1},...a_{i,n})$, and for $j=1,...,n$ define $F_j=\prod_{s=1}^{r}(X_j-a_{s,j})$, clearly $F_j\in V(I)$, so by Nullstellensatz $F_j^N\in I$ for some $N$, WLOG take $N$ so large that it holds for all $F_j$. Consequently $\bar{F_{j}^{N}}=0$, for all $j$ and
+		 since $F_{j}^{N}\in I$ is a polynomial in $X_j$ of degree $rN$, $\bar{X_j}^{rN}$ is a $k-$linear combination of $1,X_{j}^{1},X_{j}^{2},...,X_{j}^{rN-1}$, and hence so is any positve order $X_{j}^{s}$. Therefore $\lbrace \bar{X_1}^{m_1}\cdot \bar{X_2}^{m_2}\cdot...\cdot \bar{X_n}^{m_n} \rbrace$ generates $k[X_1,...,X_n]/I$ as a vector space over $k$.
 	\end{proof}
+	\subsection{Gröbner basis}
+	For polynomials with one variable $f(x),g(X)\in k[X]$, we have polynomial division algorithm $f(X)=g(X)q(X)+r(X)$, where the degree of the remainder $r(X)$ is less than $g(X)$. But for multivariate polynomials, there's no natural ordering of polynomials. So in order to do \textbf{generalized polynomial division}, we need an \textbf{monomial ordering}, usually the lexico order $x_1>x_2>...$ or some permutation $x_{\alpha_1}>x_{\alpha_2}>...$.\\
+	We also need another tool called Gröbner basis to perform generalized polynomial division, Gröbner basis is strongly related to some well-known algorithm, such as:
+	\begin{itemize}
+		\item Gaussian Elimination
+		\item Euclidean Algorithm for Computing gcd
+		\item Simplex Algorithm
+		\item ... 
+	\end{itemize}
+	\begin{center} 
+	\begin{tikzpicture}
+		
+		\node (X1) at (4,0) {\fbox{Set of input polynomials $F=\lbrace f_1,...,f_n \rbrace$}};
+		\node (X2) at (4,-2) {\fbox{Set of output polynomials $G=\lbrace g_1,...,g_m \rbrace$(Gröbner basis)}};
+
+		
+		\draw[->] (X1)--(X2) node[midway,right]{Buchberger Algorithm};
+	\end{tikzpicture}
+	\end{center}
+	\begin{center}
+			
+			\begin{tikzpicture}
+			
+			\node (X1) at (4,0) {$\lbrace 2x+3y+4z-5,3x+4y+5z-2 \rbrace$:Two plane in $\mathbb{R}^3$};
+			\node (X2) at (4,-2) {$\lbrace x-z+14,y+2z-11  \rbrace$:Two line in $x-y,y-z$ plane, respectively};
+			
+			
+			\draw[->] (X1)--(X2) node[midway,right]{Buchberger Algorithm};
+		\end{tikzpicture}
+	\end{center}
+	Will show an combinatory application of Gröbner basis:
+	\begin{question}
+		Minimize linear function $P+N+D+Q$, while $P,N,D,Q\in\mathbb{N}\cup \lbrace 0 \rbrace$, with constraint $ P+5N+10D+25Q=117$.
+	\end{question}
+	\textbf{Answer:} Consider polynomial ring $\mathbb{Q}[C,P,N,D,Q]$, can represente a combination of coins by a monomial $C^{n}P^{n_P}N^{n_N}D^{n_D}Q^{n_Q}$, where $n=\sum_\alpha n_\alpha$.\\
+	Now define relations:
+	\begin{align*}
+		&f_1=CN-C^5P^5\\
+		&f_2=CD-C^{10}P^{10}\\
+		&f_3=CQ-C^{25}P^{25}
+	\end{align*}
+	These three polynomial represente all the exchange rules of coins, which are:
+	\begin{align*}
+		&\text{1 nickel }=\text{ 5 pennies}\\
+		&\text{1 dime }=\text{ 10 pennies}\\
+		&\text{1 quarter }=\text{ 25 pennies}\\
+	\end{align*}
+	The $C-$degree of each monomial in the relations representes the number of coins.\\
+	Now choose an ordering $C> P> N> D> Q$, then apply Buchberger Algorithm to these three polynomials, will get a unique \textbf{reduced Gröbner basis} consists of nine polynomials (computed by program, might be wrong):
+	\begin{align*}
+		&g_1: C^5P^5 - CN\\
+		&g_2: C^2N^2 - CD\\
+		&g_3: C^3ND^2 - CQ\\
+		&g_4: C^4P^5D - CN^3\\
+		&g_5: C^2D^3 - CNQ\\
+		&g_6: CN^3Q - CD^4\\
+		&g_7: C^3P^5D^2 - CN^5\\
+		&g_8: CP^5Q - CN^6\\
+		&g_9: CP^5D^4 - CN^9\\
+	\end{align*}
+	In order to minimize total number of coins, we apply generalized polynomial division to $C^{117}P^{117}$(representes 117 coins of penny), and calculate the remainder, which is:
+	\begin{center}
+		\fbox{$C^8P^2NDQ^4$}
+	\end{center}
+	The multi-degree $(8,2,1,1,4)$ means total of 8 coins, with 2 pennies, 1 nickel, 1 dime, and 4 quarters.\\
+	Here are some total amount of cents and its minimal number of coins represented with monomials:\\
+	\begin{center}
+\begin{tabular}{|c|c|}
+	\hline
+	Dividend & Remainder \\
+	\hline
+	$C^{30}P^{30}$ & $C^{2}NQ$ \\
+	$C^{567}P^{567}$ & $C^{26}P^{2}NDQ^{22}$ \\
+	$C^{9999}P^{9999}$ & $C^{405}P^{4}D^{2}Q^{399}$ \\
+	$C^{35857}P^{35857}$ & $C^{1437}P^{2}NQ^{1434}$ \\
+	$C^{8679031}P^{8679031}$ & $C^{347163}PNQ^{347161}$ \\
+	\hline
+\end{tabular}
+\end{center}
+\textbf{Note:} The additional vairable $C$ for counting number of coins is crutial, one may try to work under $\mathbb{Q}[P,N,D,Q]$ and compute Gröbner basis for:
+\begin{align*}
+	&f^{\prime}_{1}=N-P^5\\
+	&f^{\prime}_{2}=D-P^{10}\\
+	&f^{\prime}_{3}=Q-P^{25}
+\end{align*}
+with ordering $P>N>D>Q$, this is the only reasonable choice of lexico order, since generalized polynomial division tend to make the remainder as small as possible, and the least favorite coin is penny, otherwise the remainder of, for example $Q$ may be $P^25$, in which case the total number of coins increases. Similarly for $N,D,Q$. But one observes that:
+\begin{equation*}
+	QN\sim D^3 
+\end{equation*}
+Which the degree on the left-hand-side is greater, but the right one has much number of coins.
 \end{document}
