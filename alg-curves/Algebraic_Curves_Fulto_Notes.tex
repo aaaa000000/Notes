@@ -8,6 +8,9 @@
 \usetikzlibrary{fit}
 \usetikzlibrary{arrows.meta}
 \usepackage{enumitem}
+\usetikzlibrary{arrows.meta,decorations.pathreplacing,calc}
+\usepackage{xcolor}
+\usetikzlibrary{decorations.markings}
 
 \title{Algebraic Curves}
 \newtheorem*{example*}{Example}
@@ -173,6 +176,9 @@
 		Conversely, if $V(I)=\lbrace P_1,...,P_r \rbrace$ is finite, let $P_{i}=(a_{i,1},...a_{i,n})$, and for $j=1,...,n$ define $F_j=\prod_{s=1}^{r}(X_j-a_{s,j})$, clearly $F_j\in V(I)$, so by Nullstellensatz $F_j^N\in I$ for some $N$, WLOG take $N$ so large that it holds for all $F_j$. Consequently $\bar{F_{j}^{N}}=0$, for all $j$ and
 		 since $F_{j}^{N}\in I$ is a polynomial in $X_j$ of degree $rN$, $\bar{X_j}^{rN}$ is a $k-$linear combination of $1,X_{j}^{1},X_{j}^{2},...,X_{j}^{rN-1}$, and hence so is any positve order $X_{j}^{s}$. Therefore $\lbrace \bar{X_1}^{m_1}\cdot \bar{X_2}^{m_2}\cdot...\cdot \bar{X_n}^{m_n} \rbrace$ generates $k[X_1,...,X_n]/I$ as a vector space over $k$.
 	\end{proof}
+	
+	
+	\section{Appendix}
 	\subsection{Gröbner basis}
 	For polynomials with one variable $f(x),g(X)\in k[X]$, we have polynomial division algorithm $f(X)=g(X)q(X)+r(X)$, where the degree of the remainder $r(X)$ is less than $g(X)$. But for multivariate polynomials, there's no natural ordering of polynomials. So in order to do \textbf{generalized polynomial division}, we need an \textbf{monomial ordering}, usually the lexico order $x_1>x_2>...$ or some permutation $x_{\alpha_1}>x_{\alpha_2}>...$.\\
 	We also need another tool called Gröbner basis to perform generalized polynomial division, Gröbner basis is strongly related to some well-known algorithm, such as:
@@ -304,5 +310,306 @@ For example, the lexico ordering is of $l-$elimination type.
 	\end{equation*} 
 	is a Gröbner basis of the $l-$elimination ideal $I_l$.
 \end{theorem}
+\subsection{Simplicies $\&$ Simplicial Complexes}
+\textbf{Simplices} are the higher-dimensional analogues of triangles. 
+\paragraph{Convex Combination}
+\begin{center}
+	
 
+	\begin{tikzpicture}[>=Stealth, every node/.style={font=\small}]
+		
+		% ==================== 左圖 ====================
+		\begin{scope}[shift={(0,0)}]
+			% axes
+			\draw[->] (0,0) -- (4,0) node[below right] {$x$};
+			\draw[->] (0,0) -- (0,4) node[above left] {$y$};
+			
+			\foreach \i in {1,2,3}
+			\draw (\i,0.05) -- (\i,-0.05) node[below] {\i};
+			\foreach \j in {1,2,3}
+			\draw (0.05,\j) -- (-0.05,\j) node[left] {\j};
+			
+			% vectors
+			\coordinate (O) at (0,0);
+			\coordinate (v0) at (2.4,1.2);
+			\coordinate (v1) at (1.0,2.8);
+			
+			% vector arrows
+			\draw[->] (O) -- (v0);
+			\draw[->] (O) -- (v1) node[midway, above left] {$\vec{v_1}$};
+			
+			% v1 label (below)
+			\node[below right] at ($(O)!0.5!(v0)$) {$\vec{v_0}$};
+			
+			% thick connecting segment
+			\draw[very thick] (v0) -- (v1);
+			
+			% ---- interior point for left figure ----
+			\coordinate (pL) at ($(v0)!0.45!(v1)$);
+			\fill (pL) circle (0.035);
+			
+			% curved arrow → pL
+			\draw[->, bend left=20, thick]
+			($(pL)+(1.0,0.9)$) to (pL);
+			
+			% label (horizontal)
+			\node[above] at ($(pL)+(1.0,0.9)$)
+			{$\lambda_0 \vec{v_0} + \lambda_1 \vec{v_1}$};
+			
+			\fill (0,0) circle (0.03);
+		\end{scope}
+		
+		
+		% ==================== 右圖：三角形 + 兩個示意點 ====================
+		\begin{scope}[shift={(6,0)}]
+			% axes
+			\draw[->] (0,0) -- (4.5,0) node[below right] {$x$};
+			\draw[->] (0,0) -- (0,4.5) node[above left] {$y$};
+			
+			\foreach \i in {1,2,3,4}
+			\draw (\i,0.05) -- (\i,-0.05) node[below] {\i};
+			\foreach \j in {1,2,3,4}
+			\draw (0.05,\j) -- (-0.05,\j) node[left] {\j};
+			
+			% simplex vertices
+			\coordinate (O) at (0,0);
+			\coordinate (A) at (3.2,0.9);  % v1
+			\coordinate (B) at (1.0,3.0);  % v2
+			\coordinate (C) at (3.0,2.8);  % v3
+			
+			% filled triangle
+			\fill[gray!30] (A) -- (B) -- (C) -- cycle;
+			
+			% boundary
+			\draw[thick] (A) -- (B) -- (C) -- cycle;
+			
+			% arrows from origin
+			\draw[->] (O) -- (A) node[midway, below right] {$\vec{v_0}$};
+			\draw[->] (O) -- (B) node[midway, above left] {$\vec{v_1}$};
+			\draw[->] (O) -- (C);
+			\node[below] at ($(O)!0.5!(C)$) {$\vec{v_2}$};
+			
+			% ---- interior point p ----
+			\coordinate (p) at ($0.3*(A)+0.4*(B)+0.3*(C)$);
+			\fill (p) circle (0.035);
+			
+			% curved arrow → p
+			\draw[->, bend left=20, thick]
+			($(p)+(1.2,1.0)$) to (p);
+			
+			% label (horizontal)
+			\node[above] at ($(p)+(1.2,1.0)$)
+			{$\lambda_0 \vec{v_0} + \lambda_1 \vec{v_1} + \lambda_2 \vec{v_2}$};
+			
+			% ---- second point q on AB ----
+
+
+
+			
+		\end{scope}
+		
+	\end{tikzpicture}
+	
+
+
+\end{center}
+Points in triangle are uniquely determined by $(\lambda_0,...,\lambda_n)$, $\lambda_i\geq 0$ and $\sum_{i=0}^{n}\lambda_i=1$. These $(\lambda_0,...,\lambda_n)$ are called the barycentric coordinates for simplcies.\\
+In $\mathbb{A}^n$, let $\vec{v_0},...,\vec{v_n}$ be points not lying on same hyperplane, then 
+the $n-$simplex $\Delta_n$, denoted by $(\vec{v_0}, \vec{v_1},...,\vec{v_n})$ is described by:
+\begin{equation*}
+	\lbrace \lambda_0\vec{v_0}+\lambda_1\vec{v_1}+...+\lambda_n\vec{v_n}|0\leq \lambda_i\leq 1, \sum \lambda_i=1 \rbrace
+\end{equation*}
+A \textbf{$n-$dimensional standard form} of simplex is the simplex defined by $(e_1,...,e_{n+1})$ in $\mathbb{A}^{n+1}$, which lies in the hyperplane $x_1+x_2+...+x_{n+1}=1$.\\
+\paragraph{Simplicial Complexes}
+\\\\
+Building up a space using simplicies.\\
+Any 2 simplicies in a simplicial complex are either disjoint or meet in a common face.\\
+A face of a simplicies $(x_1,...x_n)$ is a simplcies whose vertices are in $x_1,...,x_n$. For example $(x_2,x_3,x_4),(x_1,x_3,x_4),(x_1,x_2,x_4),(x_1,x_2,x_3)$ are 4 different 2-dimesional faces, $(x_i,x_j),i\neq j$ are 1-dimensional(edges) faces of $(x_1,x_2,x_3,x_4)$.
+\begin{center}
+	\begin{tikzpicture}
+		\coordinate (A) at (0,0);
+		\coordinate (B) at (3,0);
+		\coordinate (C) at (0,2);
+		\coordinate (D) at (2,3);
+		\coordinate (E) at (4,2);
+		\coordinate (F) at (5,1);
+		\coordinate (G) at (-1.5,1.5);
+		\draw (A)--(C);
+		\draw (A)--(B);
+		\draw (A)--(D);
+		\draw[dashed] (B)--(C);
+		\draw (B)--(D);
+		\draw (C)--(D);
+		\draw (B)--(E);
+		\draw (D)--(E);
+		\draw (B)--(F);
+		\draw (E)--(F);
+		\draw (G)--(C);
+		% 三個重疊的三角形
+		\fill[gray, opacity=0.3] (A)--(B)--(C)--cycle;
+		\fill[gray, opacity=0.3] (B)--(C)--(D)--cycle;
+		\fill[gray, opacity=0.3] (A)--(C)--(D)--cycle;
+		\fill[gray, opacity=0.3] (B)--(E)--(F)--cycle;
+		
+		% 點
+		\foreach \p in {A,B,C,D,E,F,G}{
+			\fill (\p) circle (2pt);
+		}
+	\end{tikzpicture}
+
+\end{center}
+3-simplex is the tetrahedron, 2-simplcies are all the triangles(including the faces of tetrahedron), 1-simplecies are lines, 0-simplcies are points. 
+\paragraph{Orientation}
+A simplex is oriented by choosing an ordering of its vertices; two orderings give the same orientation iff they differ by an even permutation. So for any $n-$dimensional simplex $\Delta_n$, there are only two orientation.\\
+\paragraph{Boundary}
+For a 1-dimensional oriented simplex $\Delta_1=(v_0,v_1)$, define the boundary $\partial\Delta_1=v_1-v_0.$\\
+For 2-dimensional $\Delta_2=(v_0,v_1,v_2)$, define \\$\partial \Delta_2=(v_0,v_1)+(v_1,v_2)+(v_2,v_0)=(v_0,v_1)-(v_0,v_2)+(v_1,v_2).$\\
+For general $\Delta_n=(v_0,...,v_n)$, we define the boundary $\partial \Delta_n=\sum_{i=0}^{n}(-1)^i(v_0,...,v_{i-1},\hat{v_i},v_{i+1},...,v_n)$,\\
+where the hat means 'omit', for example $(v_0,\hat{v_1},v_2)=(v_0,v_2)$.
+\paragraph{Simplicial Chain}
+Will give an example to show how is chain complex useful.\\
+Consider the following diagram of a two triangles sharing an edge, where one trianle colored in gray means it's a 2-simplex:
+\begin{center}
+	\begin{tikzpicture}
+		\coordinate (A) at (0,0);
+		\coordinate (B) at (2,1);
+		\coordinate (C) at (2,-1);
+		\coordinate (D) at (4,0);
+		\fill (A) circle (2pt) node[above left] {$A$};
+		\fill (B) circle (2pt) node[above] {$B$};
+		\fill (C) circle (2pt) node[below] {$C$};
+		\fill (D) circle (2pt) node[above right] {$D$};
+		
+		\draw (A)--(B);
+		\draw (A)--(C);
+		\draw (C)--(B);
+		\draw (D)--(B);
+		\draw (D)--(C);
+		\fill[gray, opacity=0.3] (A)--(B)--(C)--cycle;
+		\foreach \p in {A,B,C,D}{
+			\fill (\p) circle (2pt);
+		}
+	\end{tikzpicture}
+\end{center}
+Consider chain complex:
+\begin{equation*}
+	\mathbb{Z}[F]\xrightarrow{\partial_2}\mathbb{Z}[E]\xrightarrow{\partial_1}\mathbb{Z}[V]
+\end{equation*}
+Where $F,E,V$ are sets of faces, edges, points, repectively. \\Easy to see $\text{Im }\partial_2$ is the $\mathbb{Z}-$linear combination of $(A,B)+(B,C)+(C,A)$, and $\text{Ker} \partial_1$ is the $\mathbb{Z}-$linear combination of $(A,B)+(B,C)+(C,A)$ and $(B,D)+(D,C)+(C,B)$.
+\begin{center}
+	\begin{tikzpicture}
+		\node () at (-3,1) {Im $\partial_2$:};
+		\node () at (-1,0) {$\mathbb{Z}\cdot$};
+		\coordinate (A) at (0,0);
+		\coordinate (B) at (2,1);
+		\coordinate (C) at (2,-1);
+		
+		\fill (A) circle (2pt) node[above left] {$A$};
+		\fill (B) circle (2pt) node[above] {$B$};
+		\fill (C) circle (2pt) node[below] {$C$};
+	
+		
+		\draw[postaction={
+			decorate,
+			decoration={markings, mark=at position 0.5 with {\arrow{Stealth}}}
+		}
+		] (A) -- (B);
+		\draw[postaction={
+			decorate,
+			decoration={markings, mark=at position 0.5 with {\arrow{Stealth}}}
+		}
+		] (C) -- (A);
+		\draw[postaction={
+			decorate,
+			decoration={markings, mark=at position 0.5 with {\arrow{Stealth}}}
+		}
+		] (B) -- (C);
+		
+	\end{tikzpicture}
+\end{center}
+\begin{center}
+	\begin{tikzpicture}
+		\node () at (-3,1) {Ker $\partial_1$:};
+		\node () at (-1,0) {$\mathbb{Z}\cdot$};
+		\coordinate (A) at (0,0);
+		\coordinate (B) at (2,1);
+		\coordinate (C) at (2,-1);
+		
+		\fill (A) circle (2pt) node[above left] {$A$};
+		\fill (B) circle (2pt) node[above] {$B$};
+		\fill (C) circle (2pt) node[below] {$C$};
+	
+		\draw[postaction={
+			decorate,
+			decoration={markings, mark=at position 0.5 with {\arrow{Stealth}}}
+		}
+		] (A) -- (B);
+		\draw[postaction={
+			decorate,
+			decoration={markings, mark=at position 0.5 with {\arrow{Stealth}}}
+		}
+		] (C) -- (A);
+		\draw[postaction={
+			decorate,
+			decoration={markings, mark=at position 0.5 with {\arrow{Stealth}}}
+		}
+		] (B) -- (C);
+		
+		
+		\node () at (-1,0) {$\mathbb{Z}\cdot$};
+		
+		\coordinate (B1) at (6,1);
+		\coordinate (C1) at (6,-1);
+		\coordinate (D1) at (8,0);
+		\node () at (3.5,0) {$+$};
+		\node () at (5,0) {$\mathbb{Z}\cdot$};
+		\fill (B1) circle (2pt) node[above] {$B$};
+		\fill (C1) circle (2pt) node[below] {$C$};
+		\fill (D1) circle (2pt) node[right] {$D$};
+		
+		\draw[postaction={
+			decorate,
+			decoration={markings, mark=at position 0.5 with {\arrow{Stealth}}}
+		}
+		] (B1) -- (D1);
+		\draw[postaction={
+			decorate,
+			decoration={markings, mark=at position 0.5 with {\arrow{Stealth}}}
+		}
+		] (D1) -- (C1);
+		\draw[postaction={
+			decorate,
+			decoration={markings, mark=at position 0.5 with {\arrow{Stealth}}}
+		}
+		] (C1) -- (B1);
+		
+	\end{tikzpicture}
+\end{center}
+ker $\partial_i$ is called the $i-$th cycle, and im $\partial_{i+1}$ is called the $(i+1)-$th boundary. Can see in above diagram, the 2-th boundary (the boundary of triangles) is in 1-th cycle (all 'loops' consists of edges), and this make sense - since any $(i+1)-$th boundary must as well be a cycle.\\
+So for simplicial chain complex $\mathcal{C}_{\bullet}$, we have:
+\begin{equation*}
+	\text{im }\partial_{i+i}\subseteq \text{ker }\partial_{i}
+\end{equation*} 
+Notices that in general the inclusion is strict, a boundary is itself a cycle, but a cycle need not be a boundary of simplicies! Consider the following example, a 2-D torus (surface of donut) consists of simplcies, We can construct a closed 1-cycle that winds around the hole of the torus, but this cycle is not a boundary of any 2-D surface in the torus!\\
+To measure the difference between boundaries and cycles, we define the \textbf{n-th Homology} by the quotient $\mathbb{Z}-$module $\text{ker } \partial_{i}/\text{im }\partial_{i+1}$.
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+	
+	% Torus outer and inner boundaries
+	\draw[thick] (0,0) circle (2cm); % outer circle
+	\draw[thick] (0,0) circle (1cm); % inner hole
+	
+	% A 1-cycle going around the hole (inside the annulus)
+	\draw[red, thick]
+	(0,0) circle (1.2cm and 1.5cm);
+	
+
+	
+	% Label
+	\node at (0,-2.4) {A 1-cycle winding around the hole of the torus};
+	
+\end{tikzpicture}
+
+	
+\end{center}
 \end{document}
