@@ -8,6 +8,7 @@
 \usetikzlibrary{fit}
 \usetikzlibrary{arrows.meta}
 \usepackage{enumitem}
+\usepackage{framed}
 
 \title{Category Theory}
 \newtheorem*{example*}{Example}
@@ -15,6 +16,7 @@
 \newtheorem*{definition*}{Definition}
 \newtheorem*{lemma*}{Lemma}
 \newtheorem*{theorem*}{Theorem}
+\newtheorem*{scratch*}{Scratch of Proof}
 
 \shorttitle{Shortened title} % For headers; if undefined, the usual title will be used
  % Most of these data are not compulsory
@@ -1129,7 +1131,12 @@ Just like graph generalize category, there is also generalization of functor whi
 A graph morphism $G \xrightarrow{F}G^\prime$ is given by a map of vertices $|G| \xrightarrow{F_o}|G^\prime|$ and for every $u,v\in|G|$ a map of edges $G(u,v)\xrightarrow{F_{u,v}}G^{\prime}(F_o(u),F_o(v))$.\\
 Now we can define a graph category $\textbf{Graph}$, whose objects are all small graphs and morphisms are graph morphisms.\\
 A \text{diagram} over a graph $G$ in a category $\mathcal{C}$ is a graph morphism from $G$ to $F_G(\mathcal{C})$, where $F_G$ is the forgetful functor from $\textbf{Cal}$ to $\textbf{Graph}$.\\
+
+\begin{framed}
+	A graph serves as a carrier; once its vertices are assigned objects and its arrows are assigned morphisms, then it becomes a diagram.
+\end{framed}
 The limit for a graph is defined in the obvious way.\\
+Note: Can constitute the category of cones of a specific diagram, then the limit is the terminal object in this category of cones.
 \begin{definition*}
 A category $\mathcal{C}$ is (\textbf{complete}/\textbf{finitely complete}) if every (\textbf{small}/\textbf{finite}) diagram has a limit.
 \end{definition*}
@@ -1149,7 +1156,6 @@ The following are equivalent:
 	\item $\mathcal{C}$ has a terminal object and pullbacks.
 \end{enumerate}
 \end{theorem*}
-
 \subsection{Exercise}
 \begin{enumerate}
 	\item What are products in the category \textbf{Rel} of relations?
@@ -1158,6 +1164,35 @@ The following are equivalent:
 	\item In \textbf{Top}, regular monomorphisms coincide with embeddings (continuous functions that preserves the topological structures).
 	\item Prove that the second and third statement in the last theorem are equivalent.
 \end{enumerate}
-
-
+\begin{scratch*}[5]
+	Consider the following diagram:
+	\begin{center}
+		\begin{tikzpicture}
+			\node (E) at (0,0) {$E$};
+			\node (X) at (-1.2,-2) {$X$};
+			\node (Y) at (1.2,-2) {$Y$};
+			\node (Z) at (0,-2) {$Z$};
+			\node (P) at (0,-1) {$X\times Y$};
+			
+			\draw[->] (E)--(P);
+			\draw[->] (P)--(X);
+			\draw[->] (P)--(Y);
+			\draw[->] (X)--(Z);
+			\draw[->] (Y)--(Z);
+			
+			\draw[->,bend right=40,dashed] (E) to (X);
+			\draw[->,bend left=40,dashed] (E) to (Y);
+			\draw[
+			->,
+			bend left=40,
+			preaction={
+				draw,
+				white,
+				line width=4pt
+			}
+			] (E) to (Z);
+		\end{tikzpicture}
+	\end{center}
+\end{scratch*}
+Where $E$ is the equalizer, $X\times Y$ is the product.
 \end{document}

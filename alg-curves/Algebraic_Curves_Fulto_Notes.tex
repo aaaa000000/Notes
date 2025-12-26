@@ -11,6 +11,19 @@
 \usetikzlibrary{arrows.meta,decorations.pathreplacing,calc}
 \usepackage{xcolor}
 \usetikzlibrary{decorations.markings}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{graphicx}
+\usepackage{caption}
+
+
+\usetikzlibrary{external}
+\tikzexternalize[prefix=tikz-cache/]
+
+% 讓 externalization 明確使用 xelatex（避免它抓到錯的指令）
+\tikzset{external/system call={
+		xelatex \tikzexternalcheckshellescape -halt-on-error -interaction=batchmode
+		-jobname "\image" "\texsource"}}
 
 \title{Algebraic Curves}
 \newtheorem*{example*}{Example}
@@ -94,7 +107,7 @@
 		Let $F,G\in k[X,Y]$ with no common factors. Then $V(F,G)=V(F)\cap V(G)$ is a finite set of points.
 	\end{proposition}
 	\begin{proof}
-		Consider $A=(F,G)\cap k[X]$, can see $A$ is an ideal of $k[X]$. Since $k[X]$ is PID, $A=(f(X))$. So $FH+GK=f(X)$ for some $H,K\in k[X,Y]$. Thus the $X-$component of points in $V(F,G)$ are roots of $f(X)$, which is finitely many. Similarly, the $Y-$component of points in $V(F,G)$ are roots of some $g\in k[Y]$. Hence $V(F,G)\subseteq \lbrace (a,b) | f(a)=g(b)=0 \rbrace$, which is finite.
+		Consider $A=(F,G)\cap k[X]$, $A$ is an ideal of $k[X]$. Since $k[X]$ is PID, $A=(f(X))$. So $FH+GK=f(X)$ for some $H,K\in k[X,Y]$. Thus the $X-$component of points in $V(F,G)$ are roots of $f(X)$, which is finitely many. Similarly, the $Y-$component of points in $V(F,G)$ are roots of some $g\in k[Y]$. Hence $V(F,G)\subseteq \lbrace (a,b) | f(a)=g(b)=0 \rbrace$, which is finite.
 	\end{proof}
 	\begin{corollary}
 		If $F$ is irreducible in $k[X,Y]$, and if $V(F)$ is infinite, then $I(V(F))=(F)$ and $V(F)$ is irreducible.
@@ -148,7 +161,7 @@
 		Let $I$ be an ideal in $k[X_1,...,X_n]$, $k$ is algebraically closed. Then $I(V(I))=\text{Rad}(I)$.
 	\end{theorem}
 	\begin{proof}
-		Rad$(I)\subseteq I(V(I))$ is easy. For another direction, suppose $G\in I(V(F_1,...,F_r)),$ $F_i\in k[X_1,...,X_n]$, let $J=(F_1,...,F_r,X_{n+1}G-1)\subseteq k[X_1,...,X_n,X_{n+1}]$, can see $V(J)\subseteq \mathbb{A}^n=\emptyset.$ Apply Weak Nullstellensatz to $J$, $J=k[X_1,...,X_n,X_{n+1}]$. So $1=\sum A_i(X_1,...,X_{n+1})F_i+B(X_1,...,X_{n+1})\cdot(X_{n+1}G-1)$.\\
+		Rad$(I)\subseteq I(V(I))$ is easy. For another direction, suppose $G\in I(V(F_1,...,F_r)),$ $F_i\in k[X_1,...,X_n]$, let $J=(F_1,...,F_r,X_{n+1}G-1)\subseteq k[X_1,...,X_n,X_{n+1}]$, can see $\emptyset=V(J)\subseteq \mathbb{A}^{n+1}.$ Apply Weak Nullstellensatz to $J$, $J=k[X_1,...,X_n,X_{n+1}]$. So $1=\sum A_i(X_1,...,X_{n+1})F_i+B(X_1,...,X_{n+1})\cdot(X_{n+1}G-1)$.\\
 		Let $Y=\frac{1}{X_{n+1}}$, multiply the above equation sufficiently many times by $Y$, that the $X_{n+1}$-degree of each monomial terms is negative. (For example, $X_1 X_{n+1}^{3}+X_{2}^{3} X_{n+1}^{5}\xrightarrow{\times Y^5}X_1Y^2+X_{2}^{3}=P(\lbrace X_i|i=1,...,n \rbrace,Y)$ )\\
 		Then we get an equation $Y^N=\sum C_i(X_1,...,Y)F_i+D(X_1,...,X_n,Y)\cdot(G-Y)\in k[X_1,...,X_n,Y]$, substitute $Y=G$, it follows that $G^N\in (F_1,...,F_r)$.
 	\end{proof}
@@ -176,6 +189,45 @@
 		Conversely, if $V(I)=\lbrace P_1,...,P_r \rbrace$ is finite, let $P_{i}=(a_{i,1},...a_{i,n})$, and for $j=1,...,n$ define $F_j=\prod_{s=1}^{r}(X_j-a_{s,j})$, clearly $F_j\in V(I)$, so by Nullstellensatz $F_j^N\in I$ for some $N$, WLOG take $N$ so large that it holds for all $F_j$. Consequently $\bar{F_{j}^{N}}=0$, for all $j$ and
 		 since $F_{j}^{N}\in I$ is a polynomial in $X_j$ of degree $rN$, $\bar{X_j}^{rN}$ is a $k-$linear combination of $1,X_{j}^{1},X_{j}^{2},...,X_{j}^{rN-1}$, and hence so is any positve order $X_{j}^{s}$. Therefore $\lbrace \bar{X_1}^{m_1}\cdot \bar{X_2}^{m_2}\cdot...\cdot \bar{X_n}^{m_n} \rbrace$ generates $k[X_1,...,X_n]/I$ as a vector space over $k$.
 	\end{proof}
+	
+	
+	\section{Affine Varieties}
+	\subsection{Coordinate Rings}
+	Recall that if $V\subseteq \mathbb{A}^n$ is a variety, then $I(V)$ is a prime ideal and $k[X_1,...,X_n]/I(V)$ is a domain. We denote $\Gamma (V)=k[X_1,...,X_n]/I(V)$ and call it the \textbf{coordinate ring} of $V$.\\
+	For any $S\neq \emptyset$, let $\mathcal{F}(V,k)$ be the ring of all functions from $V$ to $k$, with the obvious addition and multiplication $f\cdot g(x)=f(x)\cdot g(x)$.\\
+	If $V\in \mathbb{A}^n$ is a variety, $f\in\mathcal{F}(V,k)$ is called a \textbf{polynomial function} if there is a polynomial $F\in k[X_1,...,X_n]$ s.t. $F(a_1,...,a_n)=f(a_1,...,a_n)$ for all $(a_1,...,a_n)\in V$. These polynomial functions form a subring of $\mathcal{F}(V,k)$ containing $k$ (the identity functions), and two polynomial $F,G$ determine the same function iff $F-G$ vanishes on $V$, i.e. $F-G\in I(V)$. Thus we consider $\Gamma(V)$ as a subring of $\mathcal{F}(V,k)$ consisting of all polynomial functions on $V$.
+	\subsection{Polynomial Maps}
+	Let $V\subseteq \mathbb{A}^n\,,W\subseteq\mathbb{A}^m$, a mapping $\varphi: V\rightarrow W$ is called a \textbf{polynomial map} if there are polynomials $T_1,...,T_m\in k[X_1,...,X_n]$ s.t. $\varphi(a_1,...,a_n)=(T_1(a_1,...,a_n),...,T_m(a_1,...,a_n))$ for all $(a_1,...,a_n)$.\\
+	Any mapping $\varphi:V\rightarrow W$ induces a homomorphism $\tilde{\varphi}:\mathcal{F}(W,k)\rightarrow \mathcal{F}(V,k)$, by letting $\tilde{\varphi}(f)=f\circ \varphi$.
+	\begin{center}
+		\begin{tikzpicture}
+			\node (W) at (0,0) {$W$};
+			\node (V) at (0,-1) {$V$};
+			\node (k) at (1.5,0) {$k$};
+			
+			\draw[->] (W)--(k) node[midway,above]{$f$};
+			\draw[->] (V)--(W) node[midway,left]{$\varphi$};
+			\draw[->,dashed] (V)--(k) node[midway,right]{$f\circ\varphi$};
+		\end{tikzpicture}
+	\end{center}
+	If $\varphi$ is a polynomial map, then $\tilde{\varphi}(\Gamma(W))\subseteq \Gamma(V)$, i.e. $\tilde{\varphi}$ sends polynomial functions on $W$ to polynomial functions on $V$. To show this, need only to check that $\tilde{\varphi}$ is well defined on residue class $f+I(W)\in \Gamma(W)$. Let $g\in I(W)$, $\tilde{\varphi}(g)=g\circ \varphi$, since $\varphi$ maps $V$ to $W$, $g\circ\varphi$ vanished on $V$, and the result follows.\\
+	If $V=\mathbb{A}^n,\, W=\mathbb{A}^m$, and $T_1,...,T_m$ determine a polynomial map $T:\mathbb{A}^n\rightarrow\mathbb{A}^m$, then $T_i$ are unique determined by $T$, i.e. there are no other distinct $T^{\prime}_{1},...,T^{\prime}_{m}$ whcih induced the same polynomial map from $\mathbb{A}^n$ to $\mathbb{A}^m$.
+	\begin{proposition}
+		Let $V\subseteq \mathbb{A}^n, W\subseteq \mathbb{A}^m$ be affine varieties. There is a natural one-to-one correspondence between the polynomial maps $\varphi:V\rightarrow W$ and the homomorphisms $\tilde{\varphi}:]=\Gamma(W)\rightarrow\Gamma(V)$. Any such $\varphi$ is the restriction of a polynomial map from $\mathbb{A}^n$ to $\mathbb{A}^m$.
+	\end{proposition} 
+	\begin{proof}
+		Let $\alpha:\Gamma(W)\rightarrow\Gamma(V)$ be a homomorphism, choose $T_1,...,T_m\in k[X_1,...,X_n]$ s.t. $T_i+I(V)=\alpha(X_i+I(W))+I(V)$ in $\Gamma(V)$, then $T=(T_1,...,T_m)$ is a polynomial map from $\mathbb{A}^n$ to $\mathbb{A}^m$, which induces $\tilde{T}:k[X_1,...,X_m]\rightarrow k[X_1,...,X_n]$. To check $T$ restrict to $V\rightarrow W$, observe that for $f(X_1,...,X_m)\in I(W)$, $\tilde{T}(f)=f\circ T=f(T_1,...,T_m)\equiv\alpha(f(X_1,...,X_m))\equiv 0$ in $\Gamma(V)$, thus $T(V)\subseteq W$. Finally, it is easy to verify $\widetilde{T|_V}=\alpha$.
+	\end{proof}
+	A polynomial map $\varphi: V\rightarrow W$ is an isomorphism if there is $\psi: W\rightarrow V$ s.t. $\varphi \circ \psi$ and $\psi \circ\varphi$ are identities on $W,V$ respectively. The previous proposition shows that two affine variety are isomorphic iff their coordinate rings are isomorphic over $k$.
+	\subsection{Coordinate Changes}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	\section{Appendix}
@@ -590,26 +642,15 @@ So for simplicial chain complex $\mathcal{C}_{\bullet}$, we have:
 \begin{equation*}
 	\text{im }\partial_{i+i}\subseteq \text{ker }\partial_{i}
 \end{equation*} 
-Notices that in general the inclusion is strict, a boundary is itself a cycle, but a cycle need not be a boundary of simplicies! Consider the following example, a 2-D torus (surface of donut) consists of simplcies, We can construct a closed 1-cycle that winds around the hole of the torus, but this cycle is not a boundary of any 2-D surface in the torus!\\
+Notices that in general the inclusion is strict, a boundary is itself a cycle, but a cycle need not be a boundary of simplicies! Consider the following example, a 2-D torus (surface of donut) consists of simplcies, We can construct a closed 1-cycle that winds around the hole of the torus, but this cycle is not a boundary of any 2-D surface on the torus!\\
 To measure the difference between boundaries and cycles, we define the \textbf{n-th Homology} by the quotient $\mathbb{Z}-$module $\text{ker } \partial_{i}/\text{im }\partial_{i+1}$.
-\begin{center}
-\begin{tikzpicture}[scale=1.2]
-	
-	% Torus outer and inner boundaries
-	\draw[thick] (0,0) circle (2cm); % outer circle
-	\draw[thick] (0,0) circle (1cm); % inner hole
-	
-	% A 1-cycle going around the hole (inside the annulus)
-	\draw[red, thick]
-	(0,0) circle (1.2cm and 1.5cm);
-	
 
-	
-	% Label
-	\node at (0,-2.4) {A 1-cycle winding around the hole of the torus};
-	
-\end{tikzpicture}
+\begin{figure}[h]
+	\centering
+	\includegraphics[angle=90, width=0.45\textwidth]{tikz-cache/Torus_cycles.svg.png}
+	\caption{Torus with two closed loops.}
+\end{figure}
 
-	
-\end{center}
+
+
 \end{document}
