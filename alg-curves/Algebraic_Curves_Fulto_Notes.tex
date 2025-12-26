@@ -334,7 +334,21 @@
 	\end{example*}
 	\subsection{Ideals with a Finite Number of Zeros}
 	The proposition of this section will be used to relate local questions (in terms of the local rings $\mathcal{O}_P(V)$) with global ones (in terms of coordinate rings).
-
+	\begin{proposition}
+		Let $I$ be an ideal in $k[X_1,...,X_n]$, $k$ is algebraically closed, and suppose $V(I)=\lbrace P_1,...,P_N \rbrace$ is finite. Let $\mathcal{O}_i=\mathcal{O}_{P_i}(\mathbb{A}^n)$. Then there is a natural isomorphism of $k[X_1,...,X_n]/I$ with $\prod^{N}_{i=1}\mathcal{O}_i/I\mathcal{O}_i$.
+	\end{proposition}
+	Will omit the proof.
+	\begin{corollary}
+	$\text{dim}_k(k[X_1,...,X_n]/I)=\sum_{i=1}^{N}\text{dim}_k(\mathcal{O}_i/I\mathcal{O}_i)$
+	\end{corollary}
+	\begin{corollary}
+		If $V(I)=\lbrace P \rbrace$, then $k[X_1,...,X_n]/I$ is isomorphic to $\mathcal{O}_P(\mathbb{A}^n)/I\mathcal{O}_P(\mathbb{A}^n)$.
+	\end{corollary}
+	
+	\section{Local Properties of Plane Curves}
+	When considering an affine plane curve, for some purposes it is useful to allow $F$ to have multiple factors.\\
+	If $F=\prod F_{i}^{e_i}$, where $F_i$ are irreducible factors, we call $e_i$ the \textbf{multiplicity} of the \textbf{component} $F_i$. $F_i$ is said to be \textbf{simple} if $e_i=1$, and \textbf{multiple} otherwise. The components can be recovered by $V(F)$, but the multiplicities cannot.\\
+	A point $P$ on the curve $F$ is called a \textbf{simple point} of $F$ if either derivative $\frac{\partial F(P)}{\partial X}$ or $\frac{\partial F(P)}{\partial Y}$ is not 0. In this case the tagent line to $F$ at $P$ is $F_X(P)(X-a)+F_Y(P)(X-b)=0$. A point that isn't simple is called \textbf{multiple} or \textbf{singular}. A curve with only simple points is called a \textbf{nonsingular curve}.
 	
 %////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////%
 	
