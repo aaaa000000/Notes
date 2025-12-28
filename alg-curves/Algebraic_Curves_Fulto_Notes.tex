@@ -8,6 +8,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{tikz-cd}
 \usetikzlibrary{fit}
+\usepackage{mdframed}
 \usetikzlibrary{arrows.meta}
 \usepackage{enumitem}
 \usetikzlibrary{arrows.meta,decorations.pathreplacing,calc}
@@ -303,8 +304,8 @@
 	$(1)\Rightarrow(2):$ Let $\mathfrak{m}=(m)$. Using Krull Intersection Theorem, there is a unique $n\in\mathbb{N}$ s.t. $z\in(m^n)$ but $z\notin (m^{n+1})$. Write $z=u\cdot m^n$. Since if $u$ is a non-unit, then $u\in (m)$, thus $m^{n+1}\mid z$, so $u$ is a unit, done.\\
 	$(2)\Rightarrow (1)$: Easy to see $(t)$ is principal and consits of all non-unit, and all ideals are principal of the form $(t^n)$, so $R$ is PID, hence Noetherian. 
 	\end{proof}
-	A ring satisfies the above conditions is called a \textbf{discrete valuation ring}, written DVR. An element $t$ as in $(2)$ is called a uniformizing parameter for DVR $R$.\\
-	Let $K$ be the fraction field of $R$, then any nonzero $z\in K$ has an unique expression $z=ut^n$, where $u$ is unit and $n\in\mathbb{Z}$, $n$ is called the order of $z$. We define $ord(0)=\infty$. Note that $R=\lbrace z\in K|ord(z)\geq0 \rbrace$ and $\mathfrak{m}=\lbrace z\in K|ord(z)>0  \rbrace$.
+	A ring satisfies the above conditions is called a \textbf{discrete valuation ring}, written DVR. An element $t$ as in $(2)$ is called a \textbf{uniformizing parameter} for DVR $R$.\\
+	Let $K$ be the fraction field of $R$, then any nonzero $z\in K$ has an unique expression $z=ut^n$, where $u$ is unit and $n\in\mathbb{Z}$, $n$ is called the order of $z$. We define $\text{ord}(0)=\infty$. Note that $R=\lbrace z\in K|\text{ord}(z)\geq0 \rbrace$ and $\mathfrak{m}=\lbrace z\in K|\text{ord}(z)>0  \rbrace$.
 	
 	\subsection{Forms}
 	\begin{definition}[Forms]
@@ -338,7 +339,7 @@
 	\begin{proposition}
 		Let $I$ be an ideal in $k[X_1,...,X_n]$, $k$ is algebraically closed, and suppose $V(I)=\lbrace P_1,...,P_N \rbrace$ is finite. Let $\mathcal{O}_i=\mathcal{O}_{P_i}(\mathbb{A}^n)$. Then there is a natural isomorphism of $k[X_1,...,X_n]/I$ with $\prod^{N}_{i=1}\mathcal{O}_i/I\mathcal{O}_i$.
 	\end{proposition}
-	Will omit the proof.
+	The proof is omitted.
 	\begin{corollary}
 	$\text{dim}_k(k[X_1,...,X_n]/I)=\sum_{i=1}^{N}\text{dim}_k(\mathcal{O}_i/I\mathcal{O}_i)$
 	\end{corollary}
@@ -392,8 +393,65 @@
 		Note that regardless of the multiplicity, $\mathfrak{m}_P(F)=(\bar{X},\bar{Y})$.\\
 		By above assumption, $F=Y+\text{(terms of order }\geq 2)$, and can write $F=YG+X^2H$, where $G=1+\text{(terms of order }\geq 1)$. Oberserve that $G(0,0)=1$, so $\bar{G}\in \Gamma(F)\subseteq\mathcal{O}_P(F)$ is a unit in $\mathcal{O}_P(F)$. 
 		By abuse of notation, let $\bar{G}^{-1}$ be the inverse, then $\bar{YG}=\bar{X^2H}$, so $\bar{Y}=\bar{X^2HG^{-1}}$ in $\mathcal{O}_P(F)$, thus $\mathcal{m}_P(F)=(\bar{X},\bar{Y})=(\bar{X})$.\\
-		The converse part will follow from the next theorem.
+		Now suppose $\mathcal{O}_P(F)$ is DVR, define a valuation function $\text{ord}_P$ on $\mathcal{O}_P(F)$. Suppose $L$ is a line through $P$, if $L$ is tengent to $F$ at $P$, then $\text{ord}_P(L)>1$ (recall that $\text{ord}_P(0)=\infty$), and $\text{ord}_P(L)=1$ if $L$ is tengent to $F$ at $P$, for since $L$ passing $P$, $L$ is nonunit in $\mathcal{O}_P(F)$, and by the same argument on the previous part, $L$ is a uniformizing parameter, hence $\text{ord}_P(L)=1$. The rest of the proof follows from the next therem.
 	\end{proof}
+	\begin{theorem}
+		Let $P$ be a point on an irreducible curve $F$, then for all sufficiently large $n$:
+		\begin{equation*}
+			m_P(F)=\text{dim}_k(\mathfrak{m}_P(F)^n/\mathfrak{m}_P(F)^{n+1})
+		\end{equation*}
+		So the multiplicity of $F$ at $P$ depends only on the local ring $\mathcal{O}_P(F).$
+	\end{theorem}
+	\begin{proof}
+		Write $\mathcal{O}=\mathcal{O}_P(V),\mathfrak{m}=\mathfrak{m}_P(V)$ for convenience.\\
+		From the exact sequence of $k[X,Y]-$mods:
+		\[ 0\rightarrow \mathfrak{m}^n/\mathfrak{m}^{n+1}\rightarrow \mathcal{O}/\mathfrak{m}^{n+1}\rightarrow \mathcal{O}/\mathfrak{m}^n  \rightarrow 0 \]
+		It follows that it is enough to show $\text{dim}_k(\mathcal{O}/\mathfrak{m}^n)=n\cdot m_P(F)+s$ for some constant $s$ and all $n\geq m_P(F)$. WLOG may assume $P=(0,0)$, so $\mathfrak{m}=(X,Y)\mathcal{O}$.\\
+		By the following fact:
+		\begin{mdframed}[frametitle={Fact:}]
+			\[
+			S^{-1}R / S^{-1}I \cong R/I,
+			\]
+			where $S^{-1}R$ is the localization of $R$ at $S$, $S$ is a multiplicative subset.
+		\end{mdframed}
+		We have:
+		\[ \mathcal{O}/\mathfrak{m}^n\cong S^{-1}\Gamma(V)/S^{-1}(X,Y)^n \cong k[X,Y]/(F,(X,Y)^n)\] 
+		So the problem is reduced to calculating the dimension of $k[X,Y]/(F,(X,Y)^n)$. Since the multiplicity $m=m_P(F)$ is the smallest degree of monomial terms, it follows that $F(X,Y)^{n-m}\subseteq I^n$, so we have a $k$-linear map:
+		\[
+		\begin{array}{r c c c}
+			\psi\colon & k[X,Y]/(X,Y)^{n-m} & \longrightarrow & k[X,Y]/(X,Y)^n \\
+			& \bar{G}        & \longmapsto     & \overline{FG}
+		\end{array}
+		\]
+		Now consider the short exact sequence:
+		\[ 0\rightarrow k[X,Y]/(X,Y)^{n-m}\xrightarrow{\psi}k[X,Y]/(X,Y)^n\xrightarrow{\pi}k[X,Y]/(F,(X,Y)^n)\rightarrow 0 \]
+		Since the $k-$dimension of $k[X,Y]/(X,Y)^n$ is $ \sum_{k=1}^{n-1}k=\frac{n(n-1)}{2}$, it follows the $k-$dimension of $k[X,Y]/(F,(X,Y)^n)$ is: \[\frac{n(n-1)}{2}-\frac{(n-m)(n-m-1)}{2}=nm-\frac{m(m-1)}{2}\]
+		for all $n\geq m$.
+	\end{proof}
+	Note that if $\mathcal{O}_P(F)$ is DVR, then Theorem 3.2 implies that $m_P(F)=1$, this complete the proof of Theorem 3.1.
+	\subsection{Intersection Numbers}
+	We want to define for plane curves $F,G$ and point $P\in \mathbb{A}^2$ the intersection number $\text{int}_P(F,G)$. We shall first list several properties we want this intersection number to have before given the definition.\\
+	We say $F,G$ intersect \textbf{properly} at $P$ if $F,G$ have no common component that passes through $P$, i.e. there is no irreducible $H\in k[X,Y]$ s.t. $P\in H$ and $H\mid F,G$.\\
+	\begin{enumerate}[label=(\arabic*)]
+		\item $\text{int}_P(F,G)$ is a nonnegative integer if $F,G$ intersect properly at $P$. $\text{int}_P(F,G)=\infty$ if $F,G$ intersect but not properly at $P$ (if $F,G$ share a irr component containing $P$).
+		\item $\text{int}_P(F,G)=0$ iff $P\notin F\cap G$. $\text{int}_P(F,G)$ depends only on the components of $F,G$ passing through $P$.
+		\item If $T$ is a affine change of coordinates on $\mathbb{A}^2$ and $T(Q)=P$, then $\text{int}_P(F,G)=\text{int}_Q(F^T,G^T)$.
+		\item $\text{int}_P(F,G)=\text{int}_P(G,F)$.
+	\end{enumerate}
+	Two curves $F,G$ are said to intersect transversally at $P$ if $P$ is a simple point both on $F,G$ and the tangent line to $F,G$ at $P$ are different.
+	\begin{enumerate}[start=5,label=(\arabic*)]
+		\item $\text{int}_P(F,G)\geq m_P(F)m_P(G)$, with equality occurring iff $F,G$ have no common tagent at $P$.
+		\item If $F=\prod F_{i}^{r_i},\,F=\prod G_{j}^{s_j}$, then $\text{int}_P(F,G)=\sum_{i,j}\text{int}_P(F_i,G_j)$.
+	\end{enumerate}
+	The last requirement says that the intersection number should depend only on the image of $G$ in $\Gamma(F)$.
+	\begin{enumerate}[start=7,label=(\arabic*)]
+		\item $\text{int}_P(F,G)=\text{int}_P(F,G+AF)$ for any $A\in k[X,Y]$.
+	\end{enumerate}
+	\begin{theorem}
+		There is a \textbf{unique} intersection number defined for all plane curve $F,G$ and point $P$ satisfying properties (1)-(7):
+		\[ \text{int}_P(F,G)=\text{dim}_k(\mathcal{O}_P(\mathbb{A}^2)/(F,G)) \]
+	\end{theorem}
+	The proof is omited.
 %////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////%
 	
 	\section{Appendix}
