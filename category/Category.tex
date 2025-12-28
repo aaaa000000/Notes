@@ -1,6 +1,5 @@
 \documentclass[english,course]{lecturenotes}
 \usepackage{lipsum}
-\usepackage{amsmath}
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usepackage{amsmath,amssymb}
@@ -9,6 +8,10 @@
 \usetikzlibrary{arrows.meta}
 \usepackage{enumitem}
 \usepackage{framed}
+
+
+
+
 
 \title{Category Theory}
 \newtheorem*{example*}{Example}
@@ -485,11 +488,11 @@ Such natural transformations are called \textbf{Natural Isomorphisms}.
 \end{proposition*}
 Now we will step away from natural transformation and look at another construction of new category via existing category.
 \subsection{Slice Category, I-indexed families of sets}
-\begin{definition*}{Slice Category}
+\begin{definition*}[Slice Category]
 Given a category $\mathcal{C}$ and an object $I\in|\mathcal{C}|$.\\
 The \textbf{Slice Category} $\mathcal{C}/I$ of $\mathcal{C}$ over $I$ is defined as:
 \begin{itemize}
-	\item \textbf{Objects:} All morphisms of the form $X\xrightarrow{p}I$ in $mathcal{C}$.
+	\item \textbf{Objects:} All morphisms of the form $X\xrightarrow{p}I$ in $\mathcal{C}$.
 	\item \textbf{Morphisms(from $X\xrightarrow{p}I$ to $Y\xrightarrow{q}I$):} All morphisms $X\xrightarrow{f}Y$ in $\mathcal{C}$ such that the diagram commutes:
 	\begin{equation*}
 		\begin{tikzpicture}
@@ -507,7 +510,7 @@ The \textbf{Slice Category} $\mathcal{C}/I$ of $\mathcal{C}$ over $I$ is defined
 \end{definition*}
 There is also \textbf{Co-slice Category} $I/\mathcal{C}$ of $\mathcal{C}$ under $I$. The objects are all morphisms $I\xrightarrow{\iota}X$ in $\mathcal{C}$, and similarly the morphisms are $X\xrightarrow{f}Y$ such that the corresponding diagram commutes.\\
 Can also define the co-slice category $I/\mathcal{C}$ as $\left( \mathcal{C}^{\text{op}} / I \right)^{\text{op}}$.
-\begin{example*}{(Slice Category in \textbf{Set})}
+\begin{example*}[(Slice Category in \textbf{Set})]
 \\Let $I$ be a set. Consider \textbf{Set}$/I$, an object in \textbf{Set}$/I$ is a function $X\xrightarrow{p}I$. We can mark the points in $X$ according to where it maps in $I$ by $p$.\\
 Now consider $X\xrightarrow{p}I$ and $Y\xrightarrow{q}I$, $X\xrightarrow{f}Y$ makes the diagram commutes iff it preserves shapes:
 % ---- 放在文件正文 ----
@@ -579,7 +582,7 @@ A morphism $f\in\textbf{Set}/I(p,q)$ is equivalent to a family of functions:
 \end{equation*}
 \end{example*}
 The slice category has a very strong connection to another naturally defined category which is the category of high index families of sets, whose morphisms are functions which preserve index.
-\begin{definition*}{(I-indexed families of sets $\textbf{Fam}_{I}$)}
+\begin{definition*}[(I-indexed families of sets $\textbf{Fam}_{I}$)]
 \\Let $I$ be a set, we define \textbf{I} to be the \textbf{discrete category} of $I$, whose objects are elements in $I$, and the only morphisms are the identities.\\
 Now we define: 
 \begin{equation*}
@@ -609,7 +612,7 @@ Now we have two natural isomorphisms:
 \end{align*}
 Can easily verify there are indeed such natural isomorphisms. 
 \end{example*}
-\begin{definition*}{(Equivalence of Categories)}
+\begin{definition*}[(Equivalence of Categories)]
 \\	
 An equivalence of categories between $\mathcal{C}$ and $\mathcal{D}$ is given by 
 $(F,G,\alpha,\beta)$ where:
@@ -665,7 +668,7 @@ There is a functor:
 \end{alignedat}
 \end{equation*}
 This functor $J$ is \textbf{full} and \textbf{faithful}, with the following definition:
-\begin{definition*}{(Full \& Faithful Functor)}
+\begin{definition*}[(Full \& Faithful Functor)]
 \begin{itemize}
 A functor $\mathcal{C}\xrightarrow{F}\mathcal{D}$ is called:
 \item \textbf{full} if for any objects $X,Y$ in $\mathcal{C}$, and for any $g\in \mathcal{D}(FX,FY)$, there exists $f\in\mathcal{C}(X,Y)$ such that $Ff=g$.
@@ -694,7 +697,7 @@ A functor $F$ is called a \textbf{weak equivalence} if $F$ is essential surjecti
 \end{enumerate}
 \end{theorem*}
 In the case of $\textbf{Mat}_{\mathbb{K}}\xrightarrow{J}\textbf{FDVect}_{\mathbb{K}}$, the "choice" is to find a basis for each finite dimensional vector space in $\textbf{FDVect}_{\mathbb{K}}$.
-\begin{proof}{(of 2)}\mbox{}\\
+\begin{proof}[(of 2)]\mbox{}\\
 Using the axiom of choice, define $G: \textbf{FDVect}_{\mathbb{K}} \to \textbf{Mat}_{\mathbb{K}}$ by choosing, for each $Y \in |\textbf{FDVect}_{\mathbb{K}}|$, an object $X \in |\textbf{Mat}_{\mathbb{K}}|$ such that $Y \xrightarrow[\beta_Y]{\sim} FX$, and set $GY = X$ (possible since $F$ is essentially surjective).\\
 We also need action of $G$ on morphisms. Given $Y\xrightarrow{g}Y^\prime$, since we want $\beta$ to be a natural transformation, the following diagram must commute:
 \begin{equation*}
@@ -829,7 +832,7 @@ Again in $\textbf{Set}$ can view a cospan $X\xrightarrow{f} Z\xleftarrow{g} Y$ a
 	\end{equation*}
 	If $f$ is a monomorphism, then $q$ is also a monomorphism, similarly, if $g$ is  a mono, then $p$ is also a mono.
 \end{itemize}
-\begin{lemma*}{(Pullback lemma)}\\
+\begin{lemma*}[(Pullback lemma)]\\
 For a diagram of two commuting square sharing a common edge:
 \begin{equation*}
 	\begin{tikzpicture}
@@ -997,7 +1000,7 @@ Can view the limit as the core, essence cone that any cone uniquely collapse int
 \textbf{Fact:} Limits are unique up to isomorphism.\\
 Pullback is actually the limit of a diagram with the form $\rightarrow\leftarrow$. 
 Now we will give some general results about limit:
-\begin{example*}\\
+\begin{example*}
 \begin{itemize}
 	\item Binary product \\
 	A \textbf{binary product} for $X,Y$ is a span $X\xleftarrow{p}P\xrightarrow{q}Y$ such that for any $X\xleftarrow{x}Z\xrightarrow{y}Y$, there exists a unique $Z\xrightarrow{z}P$ such that $p\circ z=x$ and $q\circ z=y$. Binary product is actually the limit of a two-point diagram with no arrows.\\
@@ -1065,6 +1068,7 @@ X \arrow[r, shift left=0.5ex, "f"] \arrow[r, shift right=0.5ex, swap, "g"] & Y
 \end{example*}
 \subsection{Graph}
 Diagram shapes are graphs.
+
 \begin{equation*}
 \begin{tikzpicture}
 	\node() at (0,0) {Pullback};
@@ -1123,6 +1127,7 @@ Diagram shapes are graphs.
 	\node() at (8.7,-5.5) {(extended to infinity to the left)};
 \end{tikzpicture}
 \end{equation*}
+
 Specifically \textbf{directed multigraphs} (will just call them graph instead in this lecture), also called \textbf{quivers}.
 In this lecture a graph $G$ is given by a collection $|G|$ of \textbf{vertices} and for every $u,v\in |G|$ a collection $G(u,v)$ of edges with source $u$ and target $v$.\\
 The definition is similar with category except graph don't require identities and compositions.\\
@@ -1164,7 +1169,7 @@ The following are equivalent:
 	\item In \textbf{Top}, regular monomorphisms coincide with embeddings (continuous functions that preserves the topological structures).
 	\item Prove that the second and third statement in the last theorem are equivalent.
 \end{enumerate}
-\begin{scratch*}[5]
+\begin{scratch*}
 	Consider the following diagram:
 	\begin{center}
 		\begin{tikzpicture}
