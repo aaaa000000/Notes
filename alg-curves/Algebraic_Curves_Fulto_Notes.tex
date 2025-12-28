@@ -9,6 +9,7 @@
 \usepackage{tikz-cd}
 \usetikzlibrary{fit}
 \usepackage{mdframed}
+\usepackage{float}
 \usetikzlibrary{arrows.meta}
 \usepackage{enumitem}
 \usetikzlibrary{arrows.meta,decorations.pathreplacing,calc}
@@ -451,7 +452,40 @@
 		There is a \textbf{unique} intersection number defined for all plane curve $F,G$ and point $P$ satisfying properties (1)-(7):
 		\[ \text{int}_P(F,G)=\text{dim}_k(\mathcal{O}_P(\mathbb{A}^2)/(F,G)) \]
 	\end{theorem}
-	The proof is omited.
+	The proof is omited.\\
+	Property (7) is very useful for calculating intersection numbers, for example, $\text{int}_{(0,0)}(D,E)$ can be reduced to $2\text{int}_{(0,0)}(D,Y)+\text{int}_{(0,0)}(D,H)$, where $H=5X^2-3Y^2+4Y^3+4X^2Y$, and $D,E$ as belows:
+\begin{figure}[H]
+	\centering
+	
+	\begin{minipage}[b]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{cache/curve1_X2Y2_sq_3X2Y_Y3.png}\\
+		\textbf{D:} $(X^2+Y^2)^2+3X^2Y-Y^3$
+	\end{minipage}
+	\hspace{0.06\textwidth}
+	\begin{minipage}[b]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{cache/curve2_X2Y2_cu_4X2Y2.png}\\
+		\textbf{E:} $(X^2+Y^2)^3-4X^2Y^2$
+	\end{minipage}
+	
+\end{figure}
+
+	\section{Projective Varieties}
+	\subsection{Projective Space}
+\begin{figure}[h]
+	\centering
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{cache/cone_stereo2_sml.png}
+	\end{minipage}\hfill
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{cache/mxcO0.png}
+	\end{minipage}
+\end{figure}
+
+	
 %////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////%
 	
 	\section{Appendix}
