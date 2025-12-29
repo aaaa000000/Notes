@@ -411,13 +411,14 @@
 		By the following fact:
 		\begin{mdframed}[frametitle={Fact:}]
 			\[
-			S^{-1}R / S^{-1}I \cong R/I,
+			S^{-1}R / S^{-1}I \cong S^{-1}(R/I),
 			\]
 			where $S^{-1}R$ is the localization of $R$ at $S$, $S$ is a multiplicative subset, $I\cap S= \emptyset   $.
 		\end{mdframed}
 		We have:
-		\[ \mathcal{O}/\mathfrak{m}^n\cong S^{-1}\Gamma(V)/S^{-1}(X,Y)^n \cong k[X,Y]/(F,(X,Y)^n)\] 
-		So the problem is reduced to calculating the dimension of $k[X,Y]/(F,(X,Y)^n)$. Since the multiplicity $m=m_P(F)$ is the smallest degree of monomial terms, it follows that $F(X,Y)^{n-m}\subseteq I^n$, so we have a $k$-linear map:
+		\[ \mathcal{O}/\mathfrak{m}^n\cong S^{-1}\Gamma(V)/S^{-1}(X,Y)^n \cong S^{-1}( k[X,Y]/(F,(X,Y)^n))\] 
+		For $k[X,Y]/(F,(X,Y)^n)$ is already local at the point $(0,0)$, $S^{-1}(k[X,Y]/(F,(X,Y)^n))\cong k[X,Y]/(F,(X,Y)^n)$ 
+		, so the problem is reduced to calculating the dimension of $k[X,Y]/(F,(X,Y)^n)$. Since the multiplicity $m=m_P(F)$ is the smallest degree of monomial terms, it follows that $F(X,Y)^{n-m}\subseteq I^n$, so we have a $k$-linear map:
 		\[
 		\begin{array}{r c c c}
 			\psi\colon & k[X,Y]/(X,Y)^{n-m} & \longrightarrow & k[X,Y]/(X,Y)^n \\
