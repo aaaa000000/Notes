@@ -516,7 +516,9 @@
 	The coordinates $(x_1,...,x_{i-1},x_{i+1},...,x_{n+1})$ are called the \textbf{nonhomogeneous coordinates} for $P$ w.r.t. $U_i\coloneqq \lbrace [x_1:...:x_{n+1}]\in \mathbb{P}^n | x_i\neq 0 \rbrace$
 
 	One can view $\varphi^{-1}_i:U_i \rightarrow \mathbb{A}^n$, the obviouse bijection, as the projection of (two-sided) ray onto the $i-$th coordinate hyperplane.\\
-	We focus on $U_{n+1}$, and let $H_\infty=\mathbb{P}^n-U_{n+1}$, called the \textbf{hyperplane at infinity}. The correspondence $[x_1:...:x_n:0]\leftrightarrow [x_1:...:x_n]$ shows that $H_\infty$ may be identified with $\mathbb{P}^{n-1}$. Note that we can decomposite $\mathbb{P}^n$ into the disjoint union $\mathbb{A}^{n}\sqcup\mathbb{A}^{n-1}\sqcup...\sqcup\mathbb{A}^{0}$.
+	We focus on $U_{n+1}$, and let $H_\infty=\mathbb{P}^n-U_{n+1}$, called the \textbf{hyperplane at infinity}. The correspondence $[x_1:...:x_n:0]\leftrightarrow [x_1:...:x_n]$ shows that $H_\infty$ may be identified with $\mathbb{P}^{n-1}$. Note that we can decomposite $\mathbb{P}^n$ into the disjoint union $\mathbb{A}^{n}\sqcup\mathbb{A}^{n-1}\sqcup...\sqcup\mathbb{A}^{0}$.\\
+	Points at infinity $H_\infty$ are not intrinsic to projective space;
+	they arise only after choosing an affine chart.
 	\subsection{Projective Algebraic Sets}
 	A point $P\in \mathbb{P}^n$ is said to be a zero of a polynomial $F\in k[X_1,...,X_n]$ if \[ F(x_1,...,x_{n+1})=0 \]
 	for \textbf{every choice} of homogeneous coordinates $ (x_1,...,x_{n+1})$ for $P$, write $F(P)=0$. If $F$ is a form, then it suffices to check one representative of $P$. The definitions of projective $V(I), I(X)$ are similar to affine case.
@@ -558,7 +560,9 @@
 	Now we can define the local ring $\mathcal{O}_P(V)$ of $V$ at a point $P$ as in affine case, the maximal ideal is \[ \mathfrak{m}_P(V)=\lbrace z|z=f/g,\, g(P)\neq 0 = f(P) \rbrace \]
 	\\
 	If $T:\mathbb{A}^{n+1}\rightarrow \mathbb{A}^{n+1}$ is a linear change of coordinates, then $T$ takes lines through origin into lines through origin, thus $T$ determines a map from $\mathbb{P}^n$ to $\mathbb{P}^n$, called a projective change of coordinates.\\
-	The results of affine changes of coordinates also apply here.
+	The results of affine changes of coordinates also apply here.\\
+	Note that in projective geometry, one performs projective linear transformations on the whole projective space, without fixing a hyperplane at infinity.
+	The notion of points at infinity only appears after choosing an affine chart.
 	\subsection{Affine and Projective Varieties}
 	By the map $\varphi_{n+1}:\mathbb{A}^n\rightarrow U_{n+1}\subset \mathbb{P}^n$, consider $\mathbb{A}^n$ as a subset of $\mathbb{P}^n$. We want to study the relations between the algebraic sets in $\mathbb{A}^n$ and those in $\mathbb{P}^n$.\\
 	This transformation is carried out via homogenization, as discussed in Chapter 2, Section 6.\\
