@@ -197,7 +197,7 @@
 	\end{proof}
 	
 	
-	\section{Affine Varieties}
+	\section{AFFINE VARIETIES}
 	\subsection{Coordinate Rings}
 	Recall that if $V\subseteq \mathbb{A}^n$ is a variety, then $I(V)$ is a prime ideal and $k[X_1,...,X_n]/I(V)$ is a domain. We denote $\Gamma (V)=k[X_1,...,X_n]/I(V)$ and call it the \textbf{coordinate ring} of $V$.\\
 	For any $S\neq \emptyset$, let $\mathcal{F}(V,k)$ be the ring of all functions from $V$ to $k$, with the obvious addition and multiplication $f\cdot g(x)=f(x)\cdot g(x)$.\\
@@ -360,7 +360,7 @@
 		If $V(I)=\lbrace P \rbrace$, then $k[X_1,...,X_n]/I$ is isomorphic to $\mathcal{O}_P(\mathbb{A}^n)/I\mathcal{O}_P(\mathbb{A}^n)$.
 	\end{corollary}
 	
-	\section{Local Properties of Plane Curves}
+	\section{LOCAL PROPERTIES OF PLANE CURVES}
 	\subsection{Multiple Points and Tangent Lines}
 	When considering an affine plane curve, for some purposes it is useful to allow $F$ to have multiple factors.\\
 	If $F=\prod F_{i}^{e_i}$, where $F_i$ are irreducible factors, we call $e_i$ the \textbf{multiplicity} of the \textbf{component} $F_i$. $F_i$ is said to be \textbf{simple} if $e_i=1$, and \textbf{multiple} otherwise. The components can be recovered by $V(F)$, but the multiplicities cannot.\\
@@ -484,7 +484,7 @@
 	
 \end{figure}
 
-	\section{Projective Varieties}
+	\section{PROJECTIVE VARIETIES}
 	
 \begin{figure}[h]
 	\centering
@@ -575,9 +575,20 @@
 			\item If $V\subsetneq \mathbb{A}^n$ is not empty, then no component of $V^*$ lies in or contains $H_\infty$.
 			\item If $V\subset \mathbb{P}^n$, and no component of $V$ lies in or contains $H_\infty$, then $V_*\subsetneq \mathbb{A}^n$ and $(V_*)^*=V$.
 		\end{enumerate}
+		\end{proposition}
 		If $V$ is an algebraic set in $\mathbb{A}^n$, $V^*\subset \mathbb{P}^n$ is called the \textbf{projective closure} of $V$. Except for projective varieties lying in $H_\infty$, there is a natural one-to-one correspondence between nonempty affine and projective varieties.\\
+		The below figure shows an example, consider affine variety $V(X^2-Y^2=1)$, an hyperbola on $\mathbb{A}^2$. To find its projective closure, we homogenize the defining equation and obtain $(X^2-Y^2-1)^*=(X^2-Y^2-Z^2)\in k[X,Y,Z]$. Now $V_p(X^2-Y^2-Z^2)$ is the projective closure of the original hyperbola. Note that the variety $V_a(X^2-Y^2-Z^2)$ in $\mathbb{A}^3$ is a cone with $X-$axis as its axis, and the projection onto $Z=1$ plane recovers the original hyperbola.
+		
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=0.45\textwidth]{cache/圓錐截線_雙曲線.png}
+			\caption{The Z-axis is directed rightward, X-axis is directed upward.}
+		\end{figure}
+		Note that the projective closure of any nondegenerate conic section, such as a circle, ellipse, parabola, or hyperbola, is a smooth projective conic.
+		After a suitable projective linear change of coordinates, it can be written in the form:
+		\[ X^2+Y^2=Z^2 \]
 		Let $V$ be affine variety, $V^*$ its projective closure. If $f\in \Gamma_h(V^*)$ is a form of degree $d$, define $f_*$ as follows: take a form $F\in k[X_1,...,X_{n+1}]$ whose $I_p(V^*)$-residue is $f$, and let $f_*=I(V)-$residue of $F_*$. One checks this definition is independent of choices of $F$.\\ Then we have a natural isomorphism $\alpha: k(V^*)\rightarrow k(V)$ s.t. $\alpha(f/g)=f_*/g_*$, where $f,g$ are forms of the same degree on $V^*$. For $P\in V$, can consider $P\in V^*$ via $\varphi_{n+1}$, then $\alpha$ induces an isomorphism of $\mathcal{O}_P(V^*)$ with $\mathcal{O}_P(V)$.
-	\end{proposition}
+
 	\subsection{Multiprojective Space}
 	In this section we discuss the product of projective spaces and varieties.\\
 	First we discuss the product of affine spaces and varieties.
@@ -600,7 +611,7 @@
 	\paragraph{Segre Embedding}
 	The product of projective spaces can be realized as a subvariety of a higher-dimensional projective space. This embedding is called \textbf{Segre embedding}, defined as follows:
 	\begin{align*}
-		\sigma:\mathbb{P}^m \times \mathbb{P}^n
+		f:\mathbb{P}^m \times \mathbb{P}^n
 		&\longrightarrow \mathbb{P}^{mn+m+n} \\
 		\bigl( (x_1,\dots,x_{m+1}), (y_1,\dots,y_{n+1}) \bigr)
 		&\longmapsto
@@ -609,7 +620,7 @@
 		\dots,\;
 	x_{m+1}y_{n+1})
 	\end{align*}
-	Consider the image of $\sigma$. It is a projective variety in $\mathbb{P}^{mn+m+n}$,
+	Consider the image of $f$. It is a projective variety in $\mathbb{P}^{mn+m+n}$,
 	which is the zero set of the polynomials
 	\[
 	z_{i,j}z_{k,l} - z_{i,l}z_{k,j},
@@ -617,7 +628,7 @@
 	for all $i,j,k,l$, where $z_{i,j} \coloneqq X_i Y_j$.\\
 	When studying the product of projective varieties,
 	bihomogeneous ideals give the intrinsic algebraic description and are better suited for computations and scheme-theoretic operations;
-	while the Segre embedding provides a convenient way to view it as a projective variety and gain geometric intuition. The figure below illustrates $\mathbb{P}^1 \times \mathbb{P}^1$.
+	while the Segre embedding provides a convenient way to view it as a projective variety and gain geometric intuition. The figure below illustrates the Segre embedding of  $\mathbb{P}^1 \times \mathbb{P}^1$ into $\mathbb{P}^3$.
 	\begin{figure}[h]
 		\centering
 		\includegraphics[width=0.6\textwidth]{cache/GOg1l.png   }
@@ -626,7 +637,7 @@
 	
 %////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////%
 	
-	\section{Appendix}
+	\section{APPENDIX}
 	\subsection{Gröbner basis}
 	For polynomials with one variable $f(x),g(X)\in k[X]$, we have polynomial division algorithm $f(X)=g(X)q(X)+r(X)$, where the degree of the remainder $r(X)$ is less than $g(X)$. But for multivariate polynomials, there's no natural ordering of polynomials. So in order to do \textbf{generalized polynomial division}, we need an \textbf{monomial ordering}, usually the lexico order $x_1>x_2>...$ or some permutation $x_{\alpha_1}>x_{\alpha_2}>...$.\\
 	We also need another tool called Gröbner basis to perform generalized polynomial division, Gröbner basis is strongly related to some well-known algorithm, such as:

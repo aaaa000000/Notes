@@ -27,11 +27,13 @@ Yp = np.ones_like(Xp)*1.0
 ax.plot_surface(Xp, Yp, Zp, alpha=0.2)
 ax.set_box_aspect((8,8,8))
 ax.view_init(elev=20, azim=45)
+ax.set_axis_off()
+
 x_curve = np.linspace(-4, 4, 600)
 z_curve = np.sqrt(1 + x_curve**2)
 y_curve = np.ones_like(x_curve) * 1.0
 ax.plot(x_curve, y_curve, z_curve, color='red', linewidth=2, alpha=1.0)
 ax.plot(x_curve, y_curve, -z_curve, color='red', linewidth=2, alpha=1.0)
 plt.tight_layout()
-ax.text(1.0, -1.0, 0.0, r"$U_2:Y=1$", fontsize=14)
+ax.text(1.0, -1.0, 0.0, r"$U_3:Z=1$", fontsize=14)
 plt.savefig("圓錐截線_雙曲線")
