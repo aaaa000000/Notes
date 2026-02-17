@@ -695,14 +695,33 @@ Note that $F,G$ need no to be irreducible, the only requirement is having no com
 	Let 
 	\[ \Gamma_*=k[X,Y]/(F_*,G_*)\qquad \Gamma=R[X,Y,Z]\qquad R=k[X,Y,Z] \]
 	and let $\Gamma_d$ (resp. $R_d$) denote the vector space of forms of degree $d$ in $\Gamma$ (resp. $R$). To prove the theorem it suffices to show $\text{dim}_k \Gamma_* =\text{dim}_k\Gamma_d$ and $\text{dim}_k\Gamma_d = mn$ for some larget $d$.\\
-	Step 1 ($\text{dim}_k\Gamma_d = mn$ for large $d$):\\
+	\fbox{Step 1 ($\text{dim}_k\Gamma_d = mn$ for large $d$)}\,:\\
 	Consider the exact sequence:
 	\[ 0\rightarrow R \xrightarrow{\psi} R\times R\xrightarrow{\varphi} R \xrightarrow{\pi} \Gamma \rightarrow 0  \]
 	where $\psi(C)=(GC,-FC)$ and $\varphi(A,B)= AF+BG$. Now we restrict the exact chain to forms of specific degrees:
 	\[ 0\rightarrow R_{d-m-n} \xrightarrow{\psi} R_{d-m}\times R_{d-n}\xrightarrow{\varphi} R_d \xrightarrow{\pi} \Gamma \rightarrow 0  \]
 	By a calculation of dimension, if $d\geq m+n$, the result follows.\\
-	Step 2 ():
+	\fbox{Step 2 (The map $\pi: \Gamma \rightarrow \pi$, $\pi(\bar{H})=\bar{ZH}$, is injective)}\,:\\
+	If $ZH=AF+BG$, want to show $H=A^\prime F+B^\prime G$. For $J\in R$, denote $J_0=J(X,Y,0)$. Since $F\cap G$ is disjoint from $Z$, $F_0$ and $G_0$ are coprime forms in $k[X,Y]$. Now $0=(ZH)_0=A_0F_0+B_0G_0$, and thus $A_0F_0=-B_0G_0$, since $F_0,G_0$ are coprime, $A_0=-C G_0$ and $B_0=C F_0$ for some $C$. Now let $A_1=A+CG$ and $B_1=B-CF$, then still $ZH=A_1F+B_1G$, and $(A_1F)_0=(B_1G)_0=0$, therefore $Z|A_1F$ and $B_1G$, so $ZH=Z(A^\prime F+B^\prime G)$ for some $A^\prime, B^\prime$, and $Z=A^\prime F+B^\prime G$.\\
+	\fbox{Step 3 ($\text{dim}_k \Gamma_* = \text{dim}_k \Gamma_d$ for $d\geq m+n$)}\,:\\
+	Let the residue of $\lbrace A_1, A_2,...,A_mn\rbrace$ be a basis for $\Gamma_d$, and let $a_{i*}$ be the residue of $A_{i*}$ in $\Gamma_*$. Notice that $\pi$ in step 2 is an linear map from $\Gamma_d$ to $\Gamma_{d+1}$, thus $Z^rA_i$, $i=1,...,mn$ is a basis of $\Gamma_{d+r}$.\\
+	Now it left to show $\lbrace a_i \rbrace$ generates $\Gamma_*$ and that they are linear independent.\\
+	Let $\bar{H}\in \Gamma_*$, then $H^*$ is a form in $R=k[X,Y,Z]$. Choose large $N$ s.t. $Z^NH^*$ is a form of degree $d+r$, then $Z^NH^*=(\sum \lambda_i Z^r A_i)+BF+CG$, so $H=(Z^NH^*)_*=(\sum \lambda_i A_i*)+B_*F_*+C_*G_*$, and $\bar{h}=\sum \lambda_i a_i$ as desired.\\
+	For independent part, let $\sum \lambda_i a_i =0$, then $\sum \lambda_i A_{i*}=BF_* + CG_*$. Choose $r$ large enough, then $Z^r\sum \lambda_i A_i = Z^sB^* F+Z^tC^* G$ for some $s,t\in \mathbb{N}$, but then the residue of LHS is zero in $\Gamma_{d+r}$, by the result of step 2 $\lambda_i =0$ for all $i$.
 \end{proof}
+\begin{corollary}
+	If $F,G$ has no common components, then
+	\[ \sum_P m_P(F)m_p(G) \leq \text{deg}(F)\text{deg}(G) \]
+\end{corollary}
+Let $F,G$ be curves of degree $m,n$, repectively:
+\begin{corollary}
+If $F,G$ meet in $mn$ distinct points, then these points are simple in both $F$ and $G$.
+\end{corollary}
+\begin{corollary}
+	If $F,G$ have more then $mn$ points in common, then they have a common component.
+\end{corollary}
+
+\subsection{Multiple Points}
 %////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////%
 	
 	\section{APPENDIX}
