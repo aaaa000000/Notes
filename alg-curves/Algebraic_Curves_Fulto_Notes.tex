@@ -469,7 +469,7 @@
 	Property (7) is very useful for calculating intersection numbers, for example, $\text{int}_{(0,0)}(D,E)$ can be reduced to $2\text{int}_{(0,0)}(D,Y)+\text{int}_{(0,0)}(D,H)$, where $H=5X^2-3Y^2+4Y^3+4X^2Y$, and $D,E$ as belows:
 \begin{figure}[H]
 	\centering
-	
+
 	\begin{minipage}[b]{0.32\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{cache/curve1_X2Y2_sq_3X2Y_Y3.png}\\
@@ -483,7 +483,11 @@
 	\end{minipage}
 	
 \end{figure}
-
+	\subsection{Some Remarks on Localization}
+One may be confused when first encountering the term 'localization'— in what senses is it local?\\
+(To be completed)
+%(1)transverse line through a point on curves
+%(2)intersection number
 	\section{PROJECTIVE VARIETIES}
 	
 \begin{figure}[h]
@@ -588,7 +592,7 @@
 			\includegraphics[width=0.45\textwidth]{cache/圓錐截線_雙曲線.png}
 			\caption{The Z-axis is directed rightward, X-axis is directed upward.}
 		\end{figure}
-		Note that the projective closure of any nondegenerate conic section, such as a circle, ellipse, parabola, or hyperbola, is a smooth projective conic.
+		The projective closure of any nondegenerate conic section, such as a circle, ellipse, parabola, or hyperbola, is a smooth projective conic.
 		After a suitable projective linear change of coordinates, it can be written in the form:
 		\[ X^2+Y^2=Z^2 \]
 		Let $V$ be affine variety, $V^*$ its projective closure. If $f\in \Gamma_h(V^*)$ is a form of degree $d$, define $f_*$ as follows: take a form $F\in k[X_1,...,X_{n+1}]$ whose $I_p(V^*)$-residue is $f$, and let $f_*=I(V)-$residue of $F_*$. One checks this definition is independent of choices of $F$.\\ Then we have a natural isomorphism $\alpha: k(V^*)\rightarrow k(V)$ s.t. $\alpha(f/g)=f_*/g_*$, where $f,g$ are forms of the same degree on $V^*$. For $P\in V$, can consider $P\in V^*$ via $\varphi_{n+1}$, then $\alpha$ induces an isomorphism of $\mathcal{O}_P(V^*)$ with $\mathcal{O}_P(V)$.
@@ -602,7 +606,7 @@
 		Space& $\mathbb{A}^m$ & $\mathbb{A}^n$ & $\mathbb{A}^{m+n}$ \\ \hline
 		
 		Point &   $(x_1,...,x_m)$    & $(y_1,...,y_n)$      &      $(x_1,...,x_m,y_1,...,y_n)$ \\\hline
-		Coordinate ring &   $k[X_1,...,X_m]$    &  $k[Y_1,...,Y_n]$     & $k[X_1,...,X_m,Y_1,...,Y_n]$       \\\hline
+		Polynomial ring &   $k[X_1,...,X_m]$    &  $k[Y_1,...,Y_n]$     & $k[X_1,...,X_m,Y_1,...,Y_n]$       \\\hline
 		Variety &   $V_1$    &  $V_2$     &    $V_1\times V_2$   \\\hline
 		Ideal &   $I_1$    &   $I_2$    &    $(I_1,I_2)$   \\ \hline
 	\end{tabular}
@@ -638,7 +642,67 @@
 		\includegraphics[width=0.6\textwidth]{cache/GOg1l.png   }
 		\caption{Segre embedding of $\mathbb{P}^1\times \mathbb{P}^1$ into $\mathbb{P}^3$}
 	\end{figure}
-	
+	\section{Projective Plane Curves}
+	\subsection{Definitions}
+	A projective plane curve is a hypersurfaces on $\mathbb{P}^2$. In this section, unless otherwise specified, a "curve" refers to a projective plane curve.\\
+	The degree of a curve is the degree of its defining form. Curves of degree 1,2,3 and 4 are called \textbf{lines}, \textbf{conics}, \textbf{cubic} and \textbf{quartics} respectively. As in affine cases, we allowed multiple components and thus can dicuss multliplicities, the conventions and notations also carry over.\\
+	The following fact is useful. 
+	\paragraph{Fact:}
+	For a finite set of points $P_i\in \mathbb{P}^2$, we can always find a line $L$ that doesn't pass through any of these points.
+	\begin{scratch}
+		Will prove by induction on $n$, the number of points. Suppose the statement holds for $n=N$, now for $N+1$ points $P_1,...,P_N$, by assumption exists $L:aX+bY+cZ=0$ that doesn't pass through these $N$ points. If $(a,b,c)\cdot P_{N+1}=0$, then replace $(a,b,c)$ by $(a^\prime,b^\prime,c^\prime)=(a,b,c)+\lambda p_{N+1}$, choose $\lambda\neq 0$ s.t. $(a^\prime,b^\prime,c^\prime)\cdot P_i\neq 0$ for all $i$, this is possible since the field is algebraic closed hence infinite. 
+	\end{scratch}
+When considering finitely many points in $\mathbb{P}^2$, the above fact allows us to choose a line at infinity avoiding all of them. In particular, after a projective change of coordinates, we can always consider $Z$ as the line at infinity.\\
+Consequently, we may regard these points as lying in an affine plane, and after an affine change of coordinates, assume that they are contained in a fixed affine chart.\\
+Let $L$ be a line disjoint form $P_1,...,P_n$, and $d$ is the degree of $F$. Let $F_*=F/L^d\in k(\mathbb{P}^2)$. This $F_*$ depends on the chocie of $L$, but for another $L^\prime$ disjoint from $P_i$, $F/(L^\prime)^d=(L/L^\prime)^dF_*$ and $L/L^\prime$ is a unit in each $\mathcal{O}_{P_i}(\mathbb{P}^2)$. Under the natural identification of $k(\mathbb{A}^2)$ with $k(\mathbb{P}^2)$, this $F_*$ is the same as in affine case $F_*=F(X,Y,1)$.\\
+If $P$ is a simple point on $F$: irreducible, then $\mathcal{O}_P(F)$ is a DVR. Let $\text{ord}_{P}^{F}$ denote the order function on $k(F)$. For a form $G\in k[X,Y,Z]$, define $\text{ord}_{P}^{F}(G)$ to be $\text{ord}_{P}^{F}(\bar{G_{*}})$.\\
+ The interseciton number is defined by \[\text{int}_P(F,G)= \text{dim}_k(\mathcal{O}_P(F_*,G_*))
+\]
+This definition is independent of the choice of $L$, and it satisfies all the properties of Section 3 of Chapter 3, however, $T$ should be projective change of coordinates, and in (7) $A$ should be a form with degree $\text{deg}(G)-\text{deg}(F)$.
+\subsection{Linear System of Curves}
+We want to study all curves of degree $d$ through some set of points. Let $M_1<...<M_N$ be an ordering of monomials in $X,Y,Z$ of degree $d$, where $d=(d+1)(d+2)/2$. There's an one-to-one correspondence between forms of degree $d$ $F=\sum a_iM_i\in k[X,Y,Z]$ and $[a_1:...:a_N]\in \mathbb{P}^{N-1}$. So we can identify a curve of degree $d$ with a point in $\mathbb{P}^{d(d+3)/2}$.\\
+A set of curves of degree $d$ is called a linear system of plane curves, if it is a linear subvariety in $\mathbb{P}^{d(d+3)/2}$.
+\begin{lemma}
+	\begin{enumerate}[label=(\arabic*)]
+		\item Let $P$ be a fixed point. The set of curves of degree $d$ containing $P$ forms a hyperplane in $\mathbb{P}^{d(d+3)/2}$.
+		\item If $T:\mathbb{P}^2\rightarrow \mathbb{P}^2$ is a projective change of coordinates, then the map $F\rightarrow F^T$ on the curves of degree $d$ is also a projective change of coordinates in $\mathbb{P}^{d(d+3)/2}$.
+	\end{enumerate}
+\end{lemma}
+Let $P_1,...,Pn$ be distinct points in $\mathbb{P}^2$, $r_1,...,r_n\in \mathbb{N}_{\geq 0}$. Set
+\[ V(d;\,r_1P_1,...,r_nP_n) = \lbrace F:\text{ curves of degree }d\, |m_{P_i}(F)\geq r_i  \rbrace \]
+\begin{theorem}
+	\begin{enumerate}[label=(\arabic*)]
+	\item Fix $P\in \mathbb{P}^2$ and $r\in \mathbb{N}$, the curves passing through $P$ with multiplicity $m_F(P)\geq r$ forms a linear system of dimension $d(d+3)/2-r(r+1)/2$.
+	\item $V(d;\, r_1P_1,...,r_nP_n)$ is a linear subvariety of $\mathbb{P}^{d(d+3)/2}$ of dimension $\geq d(d+3)/2-\sum r_i(r_i+1)/2$.
+	\item If $d\geq (\sum r_i) -1$, then the equality of (1) holds.
+	\end{enumerate}
+\end{theorem}
+\begin{scratch}
+	(1) is by counting monomials $X^iY^jZ^k$ with $i+j\geq r$. (2) follows from (1).\\
+	(3): Apply induction on $(\sum r_i) -1$. Case1: $r_i=1$ is trivial. Case2: Some $r_i>1$, let $V_0=(d;(r_1-1)P_1,r_2P_2,...,r_nP_n)$ and assume $P_1=[0:0:1]$. Let $F\in V_0$ and $F_*=\sum a_iX^iY^{r-1-i} + (\text{higher terms})$, and let $V_i=\lbrace F\in V_0|a_i=0 \text{ for }j \leq i \rbrace$. Since $V_0 \supseteq V_1 \supseteq ... \supseteq V_r = V(d;\, r_1P_1,...,r_nP_n)$, it suffices to show each reverse inclusion is strict.\\
+	Let $W_0= V(d-1; \, (r_1-2)P_1,r_2P_2,...,r_nP_n)$ and for $F\in W_0$ let $F_*=\sum a_1X^iY^{r-2+1}+(\text{higher terms})$. $W_i$ defined as above, then 
+	\[ W_0\supsetneq W_1\supsetneq ... \supsetneq W_{r-1} = V(r-1;(r-1)P_1,r_2P_2,...,r_nP_n) \]
+	The strict inclusion is by induction. Since for $F\in W_i-W_{i+1}$, $FX\in V_{i+1}-V_i$ and $FY\in V_{i}-V_{i+1}$, the first reverse inclusion chain is strict, and this complete the proof (By counting chain length).
+\end{scratch}
+\subsection{Bézout's theorem}
+\begin{theorem}[Bézout's theorem]
+	Let $F,G$ be projective plane curves of degree $m,n$ respectively. Assume they have no common components, then
+	\[ \sum_P \text{Int}_P(F,G) = mn \]
+\end{theorem}
+Note that $F,G$ need no to be irreducible, the only requirement is having no common components.
+\begin{proof}
+	Since $F\cap G$ is finite, by a projective change of coordinates if necessary, assume none of the points in $F\cap G$ is on the line $Z=0$.\\
+	Let 
+	\[ \Gamma_*=k[X,Y]/(F_*,G_*)\qquad \Gamma=R[X,Y,Z]\qquad R=k[X,Y,Z] \]
+	and let $\Gamma_d$ (resp. $R_d$) denote the vector space of forms of degree $d$ in $\Gamma$ (resp. $R$). To prove the theorem it suffices to show $\text{dim}_k \Gamma_* =\text{dim}_k\Gamma_d$ and $\text{dim}_k\Gamma_d = mn$ for some larget $d$.\\
+	Step 1 ($\text{dim}_k\Gamma_d = mn$ for large $d$):\\
+	Consider the exact sequence:
+	\[ 0\rightarrow R \xrightarrow{\psi} R\times R\xrightarrow{\varphi} R \xrightarrow{\pi} \Gamma \rightarrow 0  \]
+	where $\psi(C)=(GC,-FC)$ and $\varphi(A,B)= AF+BG$. Now we restrict the exact chain to forms of specific degrees:
+	\[ 0\rightarrow R_{d-m-n} \xrightarrow{\psi} R_{d-m}\times R_{d-n}\xrightarrow{\varphi} R_d \xrightarrow{\pi} \Gamma \rightarrow 0  \]
+	By a calculation of dimension, if $d\geq m+n$, the result follows.\\
+	Step 2 ():
+\end{proof}
 %////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////%
 	
 	\section{APPENDIX}
