@@ -25,6 +25,5 @@
 *.swo
 
 *.log
-alg/
 probability/
-
+alg/
